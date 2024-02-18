@@ -1,7 +1,7 @@
 {
 	"id": "hanayama-huzzles-tracker",
 	"name": "Hanayama Huzzles Tracker",
-	"version": "1.3.2",
+	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "This scrapes the Hanayama Huzzle webpage builds a Markdown table with the information, and allows you to manually track them using a status column.",
 	"author": "Iulian Onofrei",

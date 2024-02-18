@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-hanayama-huzzles-tracker-plugin",
-	"version": "1.3.2",
+	"version": "1.0.0",
 	"description": "This is a Hanayama Huzzle puzzles tracker plugin for Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
