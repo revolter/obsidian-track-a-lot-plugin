@@ -27,10 +27,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
 
 	async updatedListInContent(content: string): Promise<string> {
-		const escapedStartMarker = this.#marker.regexEscapedStart;
-		const escapedEndMarker = this.#marker.regexEscapedEnd;
-
-		const regex = new RegExp(`${escapedStartMarker}(?<markdownList>.*?)${escapedEndMarker}`, 's');
+		const regex = new RegExp(`${this.#marker.regexEscapedStart}(?<markdownList>.*?)${this.#marker.regexEscapedEnd}`, 's');
 		const match = content.match(regex);
 
 		if (match != null && match.groups != null) {
