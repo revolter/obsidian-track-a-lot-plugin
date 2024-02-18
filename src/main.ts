@@ -1,8 +1,16 @@
 import { Notice, Plugin } from 'obsidian';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
+import { RecipesSettingsTab } from './settings/RecipesSettingsTab';
+import { SettingsManager } from './settings/SettingsManager';
 
 export default class TrackALotPlugin extends Plugin {
 	async onload() {
+		const settingsManager = new SettingsManager(this);
+		await settingsManager.loadSettings();
+
+		const settingsTab = new RecipesSettingsTab(this.app, this, settingsManager);
+		this.addSettingTab(settingsTab);
+
 		this.addCommand({
 			id: 'update-list',
 			name: 'Update list',

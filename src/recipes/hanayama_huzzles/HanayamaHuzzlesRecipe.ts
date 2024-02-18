@@ -9,8 +9,11 @@ import { Root } from 'remark-gfm/lib';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
 
 export class HanayamaHuzzlesRecipe {
-	static #START_MARKER = '<!-- Hanayama Huzzles start -->';
-	static #END_MARKER = '<!-- Hanayama Huzzles end -->';
+	static NAME = 'Hanayama Huzzles';
+	static WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle';
+
+	static #START_MARKER = `<!-- ${HanayamaHuzzlesRecipe.NAME} start -->`;
+	static #END_MARKER = `<!-- ${HanayamaHuzzlesRecipe.NAME} end -->`;
 	static #HEADERS = ['Level', 'Index', 'Name', 'Picture', 'Status'];
 	static #SCRAPE_URLS = [
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-1-fun',
