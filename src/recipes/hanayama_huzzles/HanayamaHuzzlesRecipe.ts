@@ -1,5 +1,4 @@
 import dedent from 'dedent';
-import escapeStringRegExp from 'escape-string-regexp';
 import { Image, PhrasingContent, Table, TableCell, TableRow, Text } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import { requestUrl } from 'obsidian';
@@ -28,8 +27,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
 
 	async updatedListInContent(content: string): Promise<string> {
-		const escapedStartMarker = escapeStringRegExp(this.#marker.start);
-		const escapedEndMarker = escapeStringRegExp(this.#marker.end);
+		const escapedStartMarker = this.#marker.regexEscapedStart;
+		const escapedEndMarker = this.#marker.regexEscapedEnd;
 
 		const regex = new RegExp(`${escapedStartMarker}(?<markdownList>.*?)${escapedEndMarker}`, 's');
 		const match = content.match(regex);
