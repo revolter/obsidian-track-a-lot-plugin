@@ -17,7 +17,7 @@ class HanayamaHuzzle {
 	) {}
 }
 
-export default class HanayamaHuzzlesTrackerPlugin extends Plugin {
+export default class TrackALotPlugin extends Plugin {
 	static #startMarker = '<!-- Hanayama Huzzles start -->';
 	static #endMarker = '<!-- Hanayama Huzzles end -->';
 	static #headers = ['Level', 'Index', 'Name', 'Picture', 'Status'];
@@ -55,8 +55,8 @@ export default class HanayamaHuzzlesTrackerPlugin extends Plugin {
 	onunload() {}
 
 	async #updatedListInContent(content: string): Promise<string> {
-		const escapedStartMarker = escapeStringRegExp(HanayamaHuzzlesTrackerPlugin.#startMarker);
-		const escapedEndMarker = escapeStringRegExp(HanayamaHuzzlesTrackerPlugin.#endMarker);
+		const escapedStartMarker = escapeStringRegExp(TrackALotPlugin.#startMarker);
+		const escapedEndMarker = escapeStringRegExp(TrackALotPlugin.#endMarker);
 
 		const regex = new RegExp(`${escapedStartMarker}(?<markdownList>.*?)${escapedEndMarker}`, 's');
 		const match = content.match(regex);
@@ -99,19 +99,19 @@ export default class HanayamaHuzzlesTrackerPlugin extends Plugin {
 		const withdrawnHuzzles = Object.keys(indexedCurrentHuzzles).map(key => indexedCurrentHuzzles[key]);
 		const withdrawnModifiedHuzzles = withdrawnHuzzles.filter(huzzle => huzzle.status !== '');
 
-		const updatedList = this.#huzzlesToMarkdownTableString(HanayamaHuzzlesTrackerPlugin.#headers, [...huzzles, ...withdrawnModifiedHuzzles]);
+		const updatedList = this.#huzzlesToMarkdownTableString(TrackALotPlugin.#headers, [...huzzles, ...withdrawnModifiedHuzzles]);
 
 		return dedent`
-			${HanayamaHuzzlesTrackerPlugin.#startMarker}
+			${TrackALotPlugin.#startMarker}
 
 			${updatedList}
 
-			${HanayamaHuzzlesTrackerPlugin.#endMarker}
+			${TrackALotPlugin.#endMarker}
 		`;
 	}
 
 	async #scrapeAllHuzzles(): Promise<HanayamaHuzzle[][]> {
-		return await Promise.all(HanayamaHuzzlesTrackerPlugin.#scrapeUrls.flatMap(async url => {
+		return await Promise.all(TrackALotPlugin.#scrapeUrls.flatMap(async url => {
 			return await this.#scrapeHuzzles(url);
 		}));
 	}

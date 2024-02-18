@@ -1,7 +1,7 @@
 {
-	"name": "obsidian-hanayama-huzzles-tracker-plugin",
+	"name": "obsidian-track-a-lot-plugin",
 	"version": "1.0.0",
-	"description": "This is a Hanayama Huzzle puzzles tracker plugin for Obsidian (https://obsidian.md)",
+	"description": "This is a tracker plugin for Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
 		"dev": "node esbuild.config.mjs",
@@ -10,10 +10,8 @@
 	},
 	"keywords": [
 		"obsidian",
-		"hanayama",
-		"huzzle",
-		"puzzle",
-		"tracker"
+		"tracker",
+		"plugin"
 	],
 	"author": "Iulian Onofrei",
 	"license": "MIT",
