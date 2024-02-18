@@ -6,6 +6,7 @@ import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
 import { Recipe } from '../Recipe';
+import { RecipeMarkdownListExtractor } from '../RecipeMarkdownListExtractor';
 import { RecipeMarker } from '../RecipeMarker';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
 
@@ -27,15 +28,14 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
 
 	async updatedListInContent(content: string): Promise<string> {
-		const regex = new RegExp(`${this.#marker.regexEscapedStart}(?<markdownList>.*?)${this.#marker.regexEscapedEnd}`, 's');
-		const match = content.match(regex);
+		const markdownListExtractor = new RecipeMarkdownListExtractor(this.#marker);
+		const markdownList = markdownListExtractor.extract(content);
 
-		if (match != null && match.groups != null) {
-			const markdownList = match.groups.markdownList;
+		if (markdownList != null) {
 			const currentHuzzles = this.#markdownTableToHuzzles(markdownList);
 			const updatedMarkdownList = await this.#updatedHuzzles(currentHuzzles);
 
-			return content.replace(regex, updatedMarkdownList);
+			return content.replace(markdownListExtractor.regex, updatedMarkdownList);
 		} else {
 			const updatedMarkdownList = await this.#updatedHuzzles([]);
 
