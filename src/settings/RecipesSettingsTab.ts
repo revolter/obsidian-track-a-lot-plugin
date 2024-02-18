@@ -21,15 +21,28 @@ export class RecipesSettingsTab extends PluginSettingTab {
 				this.#createTextElement('span', ' after toggling any recipe!')
 			));
 
-		const hanayamaHuzzlesWebpageLink = this.#createDescriptionLink(HanayamaHuzzlesRecipe.WEBPAGE);
+		this.#addToggle(
+			HanayamaHuzzlesRecipe.NAME,
+			HanayamaHuzzlesRecipe.WEBPAGE,
+			() => {
+				return this.settingsManager.settings.hanayamaHuzzles;
+			},
+			value => {
+				this.settingsManager.settings.hanayamaHuzzles = value;
+			}
+		);
+	}
+
+	#addToggle(name: string, webpage: string, getter: () => boolean, setter: (value: boolean) => void) {
+		const webpageLink = this.#createDescriptionLink(webpage);
 		new Setting(this.containerEl)
-			.setName(HanayamaHuzzlesRecipe.NAME)
-			.setDesc(this.#createFragment(hanayamaHuzzlesWebpageLink))
+			.setName(name)
+			.setDesc(this.#createFragment(webpageLink))
 			.addToggle(toggle => {
 				return toggle
-					.setValue(this.settingsManager.settings.hanayamaHuzzles)
+					.setValue(getter())
 					.onChange(async (value) => {
-						this.settingsManager.settings.hanayamaHuzzles = value;
+						setter(value);
 						await this.settingsManager.saveSettings();
 					});
 			});
