@@ -9,14 +9,21 @@ export class RecipeMarkdownListUpdater {
 		const markdownListExtractor = new RecipeMarkdownListExtractor(this.marker);
 		const markdownList = markdownListExtractor.extract(content);
 		const updatedMarkdownList = await amend(markdownList);
+		const markedUpdatedMarkdownList = dedent`
+			${this.marker.start}
+
+			${updatedMarkdownList}
+
+			${this.marker.end}
+		`;
 
 		if (markdownList != null) {
-			return content.replace(markdownListExtractor.regex, updatedMarkdownList);
+			return content.replace(markdownListExtractor.regex, markedUpdatedMarkdownList);
 		} else {
 			return dedent`
 				${content}
 
-				${updatedMarkdownList}
+				${markedUpdatedMarkdownList}
 			`;
 		}
 	}

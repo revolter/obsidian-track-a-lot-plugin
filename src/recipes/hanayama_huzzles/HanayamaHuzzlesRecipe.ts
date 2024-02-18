@@ -1,4 +1,3 @@
-import dedent from 'dedent';
 import { Image, PhrasingContent, Table, TableCell, TableRow, Text } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import { requestUrl } from 'obsidian';
@@ -58,15 +57,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const withdrawnHuzzles = Object.keys(indexedCurrentHuzzles).map(key => indexedCurrentHuzzles[key]);
 		const withdrawnModifiedHuzzles = withdrawnHuzzles.filter(huzzle => huzzle.status !== '');
 
-		const updatedList = this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...huzzles, ...withdrawnModifiedHuzzles]);
-
-		return dedent`
-			${this.#marker.start}
-
-			${updatedList}
-
-			${this.#marker.end}
-		`;
+		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...huzzles, ...withdrawnModifiedHuzzles]);
 	}
 
 	async #scrapeAllHuzzles(): Promise<HanayamaHuzzle[][]> {
