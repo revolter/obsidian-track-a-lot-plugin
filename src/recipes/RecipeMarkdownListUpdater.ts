@@ -8,14 +8,11 @@ export class RecipeMarkdownListUpdater {
 	async update(content: string, amend: (markdownList: string | null) => Promise<string>) {
 		const markdownListExtractor = new RecipeMarkdownListExtractor(this.marker);
 		const markdownList = markdownListExtractor.extract(content);
+		const updatedMarkdownList = await amend(markdownList);
 
 		if (markdownList != null) {
-			const updatedMarkdownList = await amend(markdownList);
-
 			return content.replace(markdownListExtractor.regex, updatedMarkdownList);
 		} else {
-			const updatedMarkdownList = await amend(null);
-
 			return dedent`
 				${content}
 

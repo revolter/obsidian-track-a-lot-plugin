@@ -31,13 +31,9 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const updater = new RecipeMarkdownListUpdater(this.#marker);
 
 		return updater.update(content, async markdownList => {
-			if (markdownList != null) {
-				const currentHuzzles = this.#markdownTableToHuzzles(markdownList);
+			const currentHuzzles = markdownList != null ? this.#markdownTableToHuzzles(markdownList) : [];
 
-				return await this.#updatedHuzzles(currentHuzzles);
-			} else {
-				return await this.#updatedHuzzles([]);
-			}
+			return await this.#updatedHuzzles(currentHuzzles);
 		});
 	}
 
