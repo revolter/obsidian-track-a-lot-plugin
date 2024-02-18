@@ -16,6 +16,7 @@
 	"author": "Iulian Onofrei",
 	"license": "MIT",
 	"devDependencies": {
+		"@stylistic/eslint-plugin-js": "1.6.2",
 		"@types/node": "^16.11.6",
 		"@typescript-eslint/eslint-plugin": "5.29.0",
 		"@typescript-eslint/parser": "5.29.0",
