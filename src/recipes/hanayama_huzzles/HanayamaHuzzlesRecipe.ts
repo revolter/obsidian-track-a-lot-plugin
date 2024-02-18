@@ -6,7 +6,7 @@ import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
 import { Recipe } from '../Recipe';
-import { RecipeMarkdownListExtractor } from '../RecipeMarkdownListExtractor';
+import { RecipeMarkdownListUpdater } from '../RecipeMarkdownListUpdater';
 import { RecipeMarker } from '../RecipeMarker';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
 
@@ -28,23 +28,17 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
 
 	async updatedListInContent(content: string): Promise<string> {
-		const markdownListExtractor = new RecipeMarkdownListExtractor(this.#marker);
-		const markdownList = markdownListExtractor.extract(content);
+		const updater = new RecipeMarkdownListUpdater(this.#marker);
 
-		if (markdownList != null) {
-			const currentHuzzles = this.#markdownTableToHuzzles(markdownList);
-			const updatedMarkdownList = await this.#updatedHuzzles(currentHuzzles);
+		return updater.update(content, async markdownList => {
+			if (markdownList != null) {
+				const currentHuzzles = this.#markdownTableToHuzzles(markdownList);
 
-			return content.replace(markdownListExtractor.regex, updatedMarkdownList);
-		} else {
-			const updatedMarkdownList = await this.#updatedHuzzles([]);
-
-			return dedent`
-				${content}
-
-				${updatedMarkdownList}
-			`;
-		}
+				return await this.#updatedHuzzles(currentHuzzles);
+			} else {
+				return await this.#updatedHuzzles([]);
+			}
+		});
 	}
 
 	async #updatedHuzzles(currentHuzzles: HanayamaHuzzle[]): Promise<string> {
