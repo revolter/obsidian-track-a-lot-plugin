@@ -3,7 +3,8 @@ import { RecipesPluginSettings } from './RecipesPluginSettings';
 
 export class SettingsManager {
 	static #DEFAULT_SETTINGS: Partial<RecipesPluginSettings> = {
-		hanayamaHuzzles: false
+		hanayamaHuzzles: false,
+		iqPuzzles: false
 	};
 
 	settings: RecipesPluginSettings;

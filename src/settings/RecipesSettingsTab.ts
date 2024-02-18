@@ -1,5 +1,6 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
+import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
 import { SettingsManager } from './SettingsManager';
 
 export class RecipesSettingsTab extends PluginSettingTab {
@@ -29,6 +30,17 @@ export class RecipesSettingsTab extends PluginSettingTab {
 			},
 			value => {
 				this.settingsManager.settings.hanayamaHuzzles = value;
+			}
+		);
+
+		this.#addToggle(
+			IQPuzzlesRecipe.NAME,
+			IQPuzzlesRecipe.WEBPAGE,
+			() => {
+				return this.settingsManager.settings.iqPuzzles;
+			},
+			value => {
+				this.settingsManager.settings.iqPuzzles = value;
 			}
 		);
 	}

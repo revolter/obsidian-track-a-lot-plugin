@@ -1,6 +1,7 @@
 import { Notice, Plugin } from 'obsidian';
 import { Recipe } from './recipes/Recipe';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
+import { IQPuzzlesRecipe } from './recipes/iq_puzzles/IQPuzzlesRecipe';
 import { RecipesSettingsTab } from './settings/RecipesSettingsTab';
 import { SettingsManager } from './settings/SettingsManager';
 
@@ -14,6 +15,10 @@ export default class TrackALotPlugin extends Plugin {
 
 		if (settingsManager.settings.hanayamaHuzzles) {
 			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe());
+		}
+
+		if (settingsManager.settings.iqPuzzles) {
+			this.#addCommand(IQPuzzlesRecipe.NAME, new IQPuzzlesRecipe());
 		}
 	}
 
