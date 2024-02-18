@@ -23,7 +23,7 @@ export class HanayamaHuzzlesRecipe {
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-5-expert',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-6-grand-master',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/chess-puzzle'
-	]
+	];
 
 	async updatedListInContent(content: string): Promise<string> {
 		const escapedStartMarker = escapeStringRegExp(HanayamaHuzzlesRecipe.#START_MARKER);
@@ -97,9 +97,9 @@ export class HanayamaHuzzlesRecipe {
 			const title = product.querySelector('.product-info > .product-title > a')?.textContent || '';
 			const titleMatch = title.match(metadataRegex);
 
-			let level: string
-			let index: string
-			let name: string
+			let level: string;
+			let index: string;
+			let name: string;
 
 			if (titleMatch != null && titleMatch.groups != null) {
 				level = titleMatch.groups.level;
@@ -137,7 +137,7 @@ export class HanayamaHuzzlesRecipe {
 		const tableRows = [
 			...[headerRow],
 			...huzzleRows
-		]
+		];
 		const table: Table = {
 			type: 'table',
 			children: tableRows as never // https://stackoverflow.com/a/47219058/865175
@@ -157,7 +157,7 @@ export class HanayamaHuzzlesRecipe {
 		return {
 			type: 'tableRow',
 			children: children
-		}
+		};
 	}
 
 	#textTableCellNode(text: string): TableCell {
@@ -168,14 +168,14 @@ export class HanayamaHuzzlesRecipe {
 		return {
 			type: 'tableCell',
 			children: children
-		}
+		};
 	}
 
 	#textNode(text: string): Text {
 		return {
 			type: 'text',
 			value: text
-		}
+		};
 	}
 
 	#imageNode(url: string, size: number): Image {
@@ -183,7 +183,7 @@ export class HanayamaHuzzlesRecipe {
 			type: 'image',
 			alt: `|${size}`,
 			url: url
-		}
+		};
 	}
 
 	#interleave<Array extends PhrasingContent, Separator extends PhrasingContent>(array: Array[], separator: Separator) {
@@ -199,8 +199,8 @@ export class HanayamaHuzzlesRecipe {
 			row.children.map(cell =>
 				cell.children.map(child => {
 					switch (child.type) {
-						case 'image': return `![${child.alt}](${child.url})`
-						default: return toString(child)
+						case 'image': return `![${child.alt}](${child.url})`;
+						default: return toString(child);
 					}
 				}).join('')
 			)
