@@ -84,20 +84,11 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		return products.flatMap(product => {
 			const title = product.querySelector('.product-info > .product-title > a')?.textContent || '';
 			const titleMatch = title.match(metadataRegex);
+			const titleGroups = titleMatch?.groups;
 
-			let level: string;
-			let index: string;
-			let name: string;
-
-			if (titleMatch != null && titleMatch.groups != null) {
-				level = titleMatch.groups.level;
-				index = titleMatch.groups.index;
-				name = titleMatch.groups.name;
-			} else {
-				level = 'N/A';
-				index = 'N/A';
-				name = title;
-			}
+			const level = titleGroups != null ? titleGroups.level : 'N/A';
+			const index = titleGroups != null ? titleGroups.index : 'N/A';
+			const name = titleGroups != null ? titleGroups.name : title;
 
 			const images = product.querySelectorAll('.product-thumb > a > img');
 			const imageLinks = Array.from(images, image => (image as HTMLImageElement).src);
