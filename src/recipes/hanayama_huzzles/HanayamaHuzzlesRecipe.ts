@@ -7,14 +7,15 @@ import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
 import { Recipe } from '../Recipe';
+import { RecipeMarker } from '../RecipeMarker';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
 
 export class HanayamaHuzzlesRecipe implements Recipe {
 	static NAME = 'Hanayama Huzzles';
 	static WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle';
 
-	static #START_MARKER = `<!-- ${HanayamaHuzzlesRecipe.NAME} start -->`;
-	static #END_MARKER = `<!-- ${HanayamaHuzzlesRecipe.NAME} end -->`;
+	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
+
 	static #HEADERS = ['Level', 'Index', 'Name', 'Picture', 'Status'];
 	static #SCRAPE_URLS = [
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-1-fun',
@@ -27,8 +28,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	];
 
 	async updatedListInContent(content: string): Promise<string> {
-		const escapedStartMarker = escapeStringRegExp(HanayamaHuzzlesRecipe.#START_MARKER);
-		const escapedEndMarker = escapeStringRegExp(HanayamaHuzzlesRecipe.#END_MARKER);
+		const escapedStartMarker = escapeStringRegExp(this.#marker.start);
+		const escapedEndMarker = escapeStringRegExp(this.#marker.end);
 
 		const regex = new RegExp(`${escapedStartMarker}(?<markdownList>.*?)${escapedEndMarker}`, 's');
 		const match = content.match(regex);
@@ -74,11 +75,11 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const updatedList = this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...huzzles, ...withdrawnModifiedHuzzles]);
 
 		return dedent`
-			${HanayamaHuzzlesRecipe.#START_MARKER}
+			${this.#marker.start}
 
 			${updatedList}
 
-			${HanayamaHuzzlesRecipe.#END_MARKER}
+			${this.#marker.end}
 		`;
 	}
 
