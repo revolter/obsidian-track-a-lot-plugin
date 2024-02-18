@@ -6,16 +6,7 @@ import { Notice, Plugin, requestUrl } from 'obsidian';
 import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
-
-class HanayamaHuzzle {
-	constructor(
-		public level: string,
-		public index: string,
-		public name: string,
-		public imageLinks: string[],
-		public status = ''
-	) {}
-}
+import { HanayamaHuzzle } from './recipes/hanayama_huzzles/HanayamaHuzzle';
 
 export default class TrackALotPlugin extends Plugin {
 	static #startMarker = '<!-- Hanayama Huzzles start -->';
