@@ -1,4 +1,5 @@
 import { Notice, Plugin } from 'obsidian';
+import { Recipe } from './recipes/Recipe';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { RecipesSettingsTab } from './settings/RecipesSettingsTab';
 import { SettingsManager } from './settings/SettingsManager';
@@ -12,29 +13,32 @@ export default class TrackALotPlugin extends Plugin {
 		this.addSettingTab(settingsTab);
 
 		if (settingsManager.settings.hanayamaHuzzles) {
-			this.addCommand({
-				id: this.#identifier(`update-${HanayamaHuzzlesRecipe.NAME}-list`),
-				name: `Update ${HanayamaHuzzlesRecipe.NAME} list`,
-				editorCallback: (editor, _view) => {
-					const content = editor.getValue();
-
-					new Notice(`${HanayamaHuzzlesRecipe.NAME} list update started`);
-					const startDate = new Date();
-
-					const hanayamaHuzzlesRecipe = new HanayamaHuzzlesRecipe();
-					hanayamaHuzzlesRecipe.updatedListInContent(content).then( newContent => {
-						editor.setValue(newContent);
-
-						const endDate = new Date();
-						const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-						new Notice(`${HanayamaHuzzlesRecipe.NAME} list update finished in ${seconds} seconds`);
-					});
-				}
-			});
+			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe());
 		}
 	}
 
 	onunload() {}
+
+	#addCommand(name: string, recipe: Recipe) {
+		this.addCommand({
+			id: this.#identifier(`update-${name}-list`),
+			name: `Update ${name} list`,
+			editorCallback: (editor, _view) => {
+				const content = editor.getValue();
+
+				new Notice(`${name} list update started`);
+				const startDate = new Date();
+
+				recipe.updatedListInContent(content).then( newContent => {
+					editor.setValue(newContent);
+
+					const endDate = new Date();
+					const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
+					new Notice(`${name} list update finished in ${seconds} seconds`);
+				});
+			}
+		});
+	}
 
 	#identifier(name: string): string {
 		return name.toLowerCase().replace(' ', '-');

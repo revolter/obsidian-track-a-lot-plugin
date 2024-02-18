@@ -6,9 +6,10 @@ import { requestUrl } from 'obsidian';
 import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
+import { Recipe } from '../Recipe';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
 
-export class HanayamaHuzzlesRecipe {
+export class HanayamaHuzzlesRecipe implements Recipe {
 	static NAME = 'Hanayama Huzzles';
 	static WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle';
 
