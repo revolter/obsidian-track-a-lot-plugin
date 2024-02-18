@@ -14,6 +14,13 @@ export class RecipesSettingsTab extends PluginSettingTab {
 			.setName('Recipes')
 			.setHeading();
 
+		new Setting(this.containerEl)
+			.setDesc(this.#createFragment(
+				this.#createTextElement('span', '⚠️ Due to Obsidian Plugin limitations, you have to disable and re-enable the plugin from '),
+				this.#createTextElement('code', 'Settings > Community plugins > Installed plugins'),
+				this.#createTextElement('span', ' after toggling any recipe!')
+			));
+
 		const hanayamaHuzzlesWebpageLink = this.#createDescriptionLink(HanayamaHuzzlesRecipe.WEBPAGE);
 		new Setting(this.containerEl)
 			.setName(HanayamaHuzzlesRecipe.NAME)
@@ -32,9 +39,13 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		return this.containerEl.createEl('a', { cls: 'setting-item-description', href: url, text: url});
 	}
 
-	#createFragment(element: HTMLElement): DocumentFragment {
+	#createTextElement<K extends keyof HTMLElementTagNameMap>(type: K, text: string): HTMLElementTagNameMap[K] {
+		return this.containerEl.createEl(type, { text: text });
+	}
+
+	#createFragment(...elements: HTMLElement[]): DocumentFragment {
 		const fragment = new DocumentFragment();
-		fragment.append(element);
+		fragment.append(...elements);
 
 		return fragment;
 	}
