@@ -9,10 +9,10 @@ import { Root } from 'remark-gfm/lib';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
 
 export class HanayamaHuzzlesRecipe {
-	static #startMarker = '<!-- Hanayama Huzzles start -->';
-	static #endMarker = '<!-- Hanayama Huzzles end -->';
-	static #headers = ['Level', 'Index', 'Name', 'Picture', 'Status'];
-	static #scrapeUrls = [
+	static #START_MARKER = '<!-- Hanayama Huzzles start -->';
+	static #END_MARKER = '<!-- Hanayama Huzzles end -->';
+	static #HEADERS = ['Level', 'Index', 'Name', 'Picture', 'Status'];
+	static #SCRAPE_URLS = [
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-1-fun',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-2-easy',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-3-normal',
@@ -23,8 +23,8 @@ export class HanayamaHuzzlesRecipe {
 	]
 
 	async updatedListInContent(content: string): Promise<string> {
-		const escapedStartMarker = escapeStringRegExp(HanayamaHuzzlesRecipe.#startMarker);
-		const escapedEndMarker = escapeStringRegExp(HanayamaHuzzlesRecipe.#endMarker);
+		const escapedStartMarker = escapeStringRegExp(HanayamaHuzzlesRecipe.#START_MARKER);
+		const escapedEndMarker = escapeStringRegExp(HanayamaHuzzlesRecipe.#END_MARKER);
 
 		const regex = new RegExp(`${escapedStartMarker}(?<markdownList>.*?)${escapedEndMarker}`, 's');
 		const match = content.match(regex);
@@ -67,19 +67,19 @@ export class HanayamaHuzzlesRecipe {
 		const withdrawnHuzzles = Object.keys(indexedCurrentHuzzles).map(key => indexedCurrentHuzzles[key]);
 		const withdrawnModifiedHuzzles = withdrawnHuzzles.filter(huzzle => huzzle.status !== '');
 
-		const updatedList = this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#headers, [...huzzles, ...withdrawnModifiedHuzzles]);
+		const updatedList = this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...huzzles, ...withdrawnModifiedHuzzles]);
 
 		return dedent`
-			${HanayamaHuzzlesRecipe.#startMarker}
+			${HanayamaHuzzlesRecipe.#START_MARKER}
 
 			${updatedList}
 
-			${HanayamaHuzzlesRecipe.#endMarker}
+			${HanayamaHuzzlesRecipe.#END_MARKER}
 		`;
 	}
 
 	async #scrapeAllHuzzles(): Promise<HanayamaHuzzle[][]> {
-		return await Promise.all(HanayamaHuzzlesRecipe.#scrapeUrls.flatMap(async url => {
+		return await Promise.all(HanayamaHuzzlesRecipe.#SCRAPE_URLS.flatMap(async url => {
 			return await this.#scrapeHuzzles(url);
 		}));
 	}
