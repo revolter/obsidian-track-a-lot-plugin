@@ -164,17 +164,19 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const ast = remark()
 			.use(remarkGFM)
 			.parse(markdownTableString);
-		const table = ast.children.find(node => node.type === 'table') as Table;
-		const arrayOfArrays = table.children.map(row =>
-			row.children.map(cell =>
-				cell.children.map(child => {
-					switch (child.type) {
-						case 'image': return `![${child.alt}](${child.url})`;
-						default: return toString(child);
-					}
-				}).join('')
+		const table = ast.children.find(node => node.type === 'table') as Table | undefined;
+		const arrayOfArrays = table != null
+			? table.children.map(row =>
+				row.children.map(cell =>
+					cell.children.map(child => {
+						switch (child.type) {
+							case 'image': return `![${child.alt}](${child.url})`;
+							default: return toString(child);
+						}
+					}).join('')
+				)
 			)
-		);
+			: [];
 		const imageLinksRegex = new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
 
 		return arrayOfArrays.flatMap(array => {
