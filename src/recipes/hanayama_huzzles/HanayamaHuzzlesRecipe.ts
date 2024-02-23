@@ -1,7 +1,4 @@
-import { Table } from 'mdast';
 import { toString } from 'mdast-util-to-string';
-import { remark } from 'remark';
-import remarkGFM from 'remark-gfm';
 import { MarkdownTableConverter } from 'src/markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
@@ -115,10 +112,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	#markdownTableToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
-		const root = remark()
-			.use(remarkGFM)
-			.parse(markdownTableString);
-		const table = root.children.find(node => node.type === 'table') as Table | null;
+		const table = this.markdownTableConverter.tableFromString(markdownTableString);
 		const arrayOfArrays = table != null
 			? table.children.map(row =>
 				row.children.map(cell =>
