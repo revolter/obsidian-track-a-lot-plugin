@@ -106,14 +106,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 				this.markdownTableFactory.textTableCellNode(huzzle.status)
 			])
 		);
-		const tableRows = [
-			headerRow,
-			...huzzleRows
-		];
-		const table: Table = {
-			type: 'table',
-			children: tableRows as never // https://stackoverflow.com/a/47219058/865175
-		};
+		const table = this.markdownTableFactory.table(headerRow, huzzleRows);
 		const root: Root = {
 			type: 'root',
 			children: [table]

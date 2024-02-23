@@ -1,10 +1,22 @@
-import { Image, PhrasingContent, TableCell, TableRow, Text } from 'mdast';
+import { Image, PhrasingContent, Table, TableCell, TableRow, Text } from 'mdast';
 
 export class MarkdownTableFactory {
-	tableRowNode(children: TableCell[]): TableRow {
+	table(header: TableRow, rows: TableRow[]): Table {
+		const allRows = [
+			header,
+			...rows
+		];
+
+		return {
+			type: 'table',
+			children: allRows as never // https://stackoverflow.com/a/47219058/865175
+		};
+	}
+
+	tableRowNode(cells: TableCell[]): TableRow {
 		return {
 			type: 'tableRow',
-			children: children
+			children: cells
 		};
 	}
 
@@ -12,10 +24,10 @@ export class MarkdownTableFactory {
 		return this.tableCellNode([this.textNode(text)]);
 	}
 
-	tableCellNode(children: PhrasingContent[]): TableCell {
+	tableCellNode(contents: PhrasingContent[]): TableCell {
 		return {
 			type: 'tableCell',
-			children: children
+			children: contents
 		};
 	}
 
