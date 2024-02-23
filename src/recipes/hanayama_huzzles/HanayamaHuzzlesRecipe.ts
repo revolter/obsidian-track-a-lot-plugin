@@ -1,8 +1,7 @@
-import { Table } from 'mdast';
+import { Root, Table } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
-import { Root } from 'remark-gfm/lib';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
 import { Recipe } from '../Recipe';
