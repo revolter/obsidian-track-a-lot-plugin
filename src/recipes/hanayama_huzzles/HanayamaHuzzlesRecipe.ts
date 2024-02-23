@@ -47,7 +47,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		huzzles.forEach( huzzle => {
 			const indexedCurrentHuzzle = indexedCurrentHuzzles[huzzle.name];
 
-			if (indexedCurrentHuzzle !== undefined) {
+			if (indexedCurrentHuzzle != null) {
 				huzzle.status = indexedCurrentHuzzle.status;
 
 				delete indexedCurrentHuzzles[huzzle.name];
@@ -164,7 +164,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const ast = remark()
 			.use(remarkGFM)
 			.parse(markdownTableString);
-		const table = ast.children.find(node => node.type === 'table') as Table | undefined;
+		const table = ast.children.find(node => node.type === 'table') as Table | null;
 		const arrayOfArrays = table != null
 			? table.children.map(row =>
 				row.children.map(cell =>
