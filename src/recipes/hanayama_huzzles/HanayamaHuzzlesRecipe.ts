@@ -111,8 +111,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	#markdownTableToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
-		const table = this.markdownTableConverter.tableFromString(markdownTableString);
-		const arrayOfArrays = table != null ? this.markdownTableConverter.arrayOfArraysFromTable(table) : [];
+		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
 		const imageLinksRegex = new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
 
 		return arrayOfArrays.flatMap(array => {
