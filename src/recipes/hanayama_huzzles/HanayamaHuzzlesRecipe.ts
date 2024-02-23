@@ -1,9 +1,9 @@
 import { Image, PhrasingContent, Table, TableCell, TableRow, Text } from 'mdast';
 import { toString } from 'mdast-util-to-string';
-import { requestUrl } from 'obsidian';
 import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
+import { WebpageDownloader } from 'src/scraping/WebpageDownloader';
 import { Recipe } from '../Recipe';
 import { RecipeMarkdownListUpdater } from '../RecipeMarkdownListUpdater';
 import { RecipeMarker } from '../RecipeMarker';
@@ -67,8 +67,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	async #scrapeHuzzles(url: string): Promise<HanayamaHuzzle[]> {
-		const response = await requestUrl(url);
-		const content = new DOMParser().parseFromString(response.text, 'text/html');
+		const downloader = new WebpageDownloader(url);
+		const content = await downloader.download();
 		const products = Array.from(content.querySelectorAll('#main > .products > .product'));
 		const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
 
