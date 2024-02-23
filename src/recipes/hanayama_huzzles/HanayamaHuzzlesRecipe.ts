@@ -43,7 +43,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 			return map;
 		}, {} as {[key: string]: HanayamaHuzzle});
 
-		const huzzles = (await this.#scrapeHuzzles()).flat();
+		const huzzles = await this.#scrapeHuzzles();
 		huzzles.forEach( huzzle => {
 			const indexedCurrentHuzzle = indexedCurrentHuzzles[huzzle.name];
 
@@ -60,12 +60,12 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...huzzles, ...withdrawnModifiedHuzzles]);
 	}
 
-	async #scrapeHuzzles(): Promise<HanayamaHuzzle[][]> {
+	async #scrapeHuzzles(): Promise<HanayamaHuzzle[]> {
 		const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
 		const scraper = new WebsiteScraper(HanayamaHuzzlesRecipe.#SCRAPE_URLS);
 		const contents = await scraper.scrape();
 
-		return contents.map(content => {
+		return contents.flatMap(content => {
 			const products = Array.from(content.querySelectorAll('#main > .products > .product'));
 
 			return products.map(product => {
