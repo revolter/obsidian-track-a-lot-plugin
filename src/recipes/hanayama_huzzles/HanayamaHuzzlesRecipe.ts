@@ -43,7 +43,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 			return map;
 		}, {} as {[key: string]: HanayamaHuzzle});
 
-		const huzzles = (await this.#scrapeAllHuzzles()).flat();
+		const huzzles = (await this.#scrapeHuzzles()).flat();
 		huzzles.forEach( huzzle => {
 			const indexedCurrentHuzzle = indexedCurrentHuzzles[huzzle.name];
 
@@ -60,32 +60,28 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...huzzles, ...withdrawnModifiedHuzzles]);
 	}
 
-	async #scrapeAllHuzzles(): Promise<HanayamaHuzzle[][]> {
+	async #scrapeHuzzles(): Promise<HanayamaHuzzle[][]> {
 		return await Promise.all(HanayamaHuzzlesRecipe.#SCRAPE_URLS.flatMap(async url => {
-			return await this.#scrapeHuzzles(url);
+			const downloader = new WebpageDownloader(url);
+			const content = await downloader.download();
+			const products = Array.from(content.querySelectorAll('#main > .products > .product'));
+			const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
+
+			return products.flatMap(product => {
+				const title = product.querySelector('.product-info > .product-title > a')?.textContent || '';
+				const titleMatch = title.match(metadataRegex);
+				const titleGroups = titleMatch?.groups;
+
+				const level = titleGroups != null ? titleGroups.level : 'N/A';
+				const index = titleGroups != null ? titleGroups.index : 'N/A';
+				const name = titleGroups != null ? titleGroups.name : title;
+
+				const images = product.querySelectorAll('.product-thumb > a > img');
+				const imageLinks = Array.from(images, image => (image as HTMLImageElement).src);
+
+				return new HanayamaHuzzle(level, index, name, imageLinks);
+			});
 		}));
-	}
-
-	async #scrapeHuzzles(url: string): Promise<HanayamaHuzzle[]> {
-		const downloader = new WebpageDownloader(url);
-		const content = await downloader.download();
-		const products = Array.from(content.querySelectorAll('#main > .products > .product'));
-		const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
-
-		return products.flatMap(product => {
-			const title = product.querySelector('.product-info > .product-title > a')?.textContent || '';
-			const titleMatch = title.match(metadataRegex);
-			const titleGroups = titleMatch?.groups;
-
-			const level = titleGroups != null ? titleGroups.level : 'N/A';
-			const index = titleGroups != null ? titleGroups.index : 'N/A';
-			const name = titleGroups != null ? titleGroups.name : title;
-
-			const images = product.querySelectorAll('.product-thumb > a > img');
-			const imageLinks = Array.from(images, image => (image as HTMLImageElement).src);
-
-			return new HanayamaHuzzle(level, index, name, imageLinks);
-		});
 	}
 
 	#huzzlesToMarkdownTableString(headers: string[], huzzles: HanayamaHuzzle[]): string {
