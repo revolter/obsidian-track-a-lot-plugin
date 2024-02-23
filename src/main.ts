@@ -6,6 +6,7 @@ import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzle
 import { IQPuzzlesRecipe } from './recipes/iq_puzzles/IQPuzzlesRecipe';
 import { RecipesSettingsTab } from './settings/RecipesSettingsTab';
 import { SettingsManager } from './settings/SettingsManager';
+import { TrackablesUpdater } from './tracking/TrackablesUpdater';
 
 export default class TrackALotPlugin extends Plugin {
 	async onload() {
@@ -17,9 +18,14 @@ export default class TrackALotPlugin extends Plugin {
 
 		const markdownTableFactory = new MarkdownTableFactory();
 		const markdownTableConverter = new MarkdownTableConverter();
+		const trackablesUpdater = new TrackablesUpdater();
 
 		if (settingsManager.settings.hanayamaHuzzles) {
-			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(markdownTableFactory, markdownTableConverter));
+			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(
+				markdownTableFactory,
+				markdownTableConverter,
+				trackablesUpdater
+			));
 		}
 
 		if (settingsManager.settings.iqPuzzles) {

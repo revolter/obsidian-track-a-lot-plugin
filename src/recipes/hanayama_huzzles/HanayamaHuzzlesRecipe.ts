@@ -1,6 +1,7 @@
 import { MarkdownTableConverter } from 'src/markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
+import { TrackablesUpdater } from 'src/tracking/TrackablesUpdater';
 import { Recipe } from '../Recipe';
 import { RecipeMarkdownListUpdater } from '../RecipeMarkdownListUpdater';
 import { RecipeMarker } from '../RecipeMarker';
@@ -25,7 +26,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 	constructor(
 		private markdownTableFactory: MarkdownTableFactory,
-		private markdownTableConverter: MarkdownTableConverter
+		private markdownTableConverter: MarkdownTableConverter,
+		private trackablesUpdater: TrackablesUpdater
 	) {}
 
 	async updatedListInContent(content: string): Promise<string> {
@@ -40,25 +42,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	#updatedHuzzles(currentHuzzles: HanayamaHuzzle[], newHuzzles: HanayamaHuzzle[]): string {
-		const indexedCurrentHuzzles = currentHuzzles.slice(1).reduce((map, huzzle) => {
-			map[huzzle.name] = huzzle;
-
-			return map;
-		}, {} as {[key: string]: HanayamaHuzzle});
-
-		newHuzzles.forEach( huzzle => {
-			const indexedCurrentHuzzle = indexedCurrentHuzzles[huzzle.name];
-
-			if (indexedCurrentHuzzle != null) {
-				huzzle.status = indexedCurrentHuzzle.status;
-
-				delete indexedCurrentHuzzles[huzzle.name];
-			}
-		});
-
-		const withdrawnHuzzles = Object.keys(indexedCurrentHuzzles).map(key => indexedCurrentHuzzles[key]);
-		const withdrawnModifiedHuzzles = withdrawnHuzzles.filter(huzzle => huzzle.status !== '');
-		const updatedHuzzles = [...newHuzzles, ...withdrawnModifiedHuzzles];
+		const updatedHuzzles = this.trackablesUpdater.updatedTrackables(currentHuzzles, newHuzzles);
 
 		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, updatedHuzzles);
 	}
