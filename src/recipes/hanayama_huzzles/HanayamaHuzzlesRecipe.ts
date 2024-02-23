@@ -1,4 +1,3 @@
-import { toString } from 'mdast-util-to-string';
 import { MarkdownTableConverter } from 'src/markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
@@ -113,18 +112,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 	#markdownTableToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
 		const table = this.markdownTableConverter.tableFromString(markdownTableString);
-		const arrayOfArrays = table != null
-			? table.children.map(row =>
-				row.children.map(cell =>
-					cell.children.map(child => {
-						switch (child.type) {
-							case 'image': return `![${child.alt}](${child.url})`;
-							default: return toString(child);
-						}
-					}).join('')
-				)
-			)
-			: [];
+		const arrayOfArrays = table != null ? this.markdownTableConverter.arrayOfArraysFromTable(table) : [];
 		const imageLinksRegex = new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
 
 		return arrayOfArrays.flatMap(array => {
