@@ -118,10 +118,10 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	#markdownTableToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
-		const ast = remark()
+		const root = remark()
 			.use(remarkGFM)
 			.parse(markdownTableString);
-		const table = ast.children.find(node => node.type === 'table') as Table | null;
+		const table = root.children.find(node => node.type === 'table') as Table | null;
 		const arrayOfArrays = table != null
 			? table.children.map(row =>
 				row.children.map(cell =>
