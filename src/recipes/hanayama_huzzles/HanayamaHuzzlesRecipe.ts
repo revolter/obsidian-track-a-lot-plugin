@@ -3,7 +3,7 @@ import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
-import { WebpageDownloader } from 'src/scraping/WebpageDownloader';
+import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
 import { Recipe } from '../Recipe';
 import { RecipeMarkdownListUpdater } from '../RecipeMarkdownListUpdater';
 import { RecipeMarker } from '../RecipeMarker';
@@ -62,10 +62,10 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[][]> {
 		const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
+		const scraper = new WebsiteScraper(HanayamaHuzzlesRecipe.#SCRAPE_URLS);
+		const contents = await scraper.scrape();
 
-		return await Promise.all(HanayamaHuzzlesRecipe.#SCRAPE_URLS.map(async url => {
-			const downloader = new WebpageDownloader(url);
-			const content = await downloader.download();
+		return contents.map(content => {
 			const products = Array.from(content.querySelectorAll('#main > .products > .product'));
 
 			return products.map(product => {
@@ -82,7 +82,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 				return new HanayamaHuzzle(level, index, name, imageLinks);
 			});
-		}));
+		});
 	}
 
 	#huzzlesToMarkdownTableString(headers: string[], huzzles: HanayamaHuzzle[]): string {
