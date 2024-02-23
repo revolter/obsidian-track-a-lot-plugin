@@ -107,7 +107,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 			])
 		);
 		const tableRows = [
-			...[headerRow],
+			headerRow,
 			...huzzleRows
 		];
 		const table: Table = {
