@@ -61,11 +61,12 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[][]> {
+		const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
+
 		return await Promise.all(HanayamaHuzzlesRecipe.#SCRAPE_URLS.flatMap(async url => {
 			const downloader = new WebpageDownloader(url);
 			const content = await downloader.download();
 			const products = Array.from(content.querySelectorAll('#main > .products > .product'));
-			const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
 
 			return products.flatMap(product => {
 				const title = product.querySelector('.product-info > .product-title > a')?.textContent || '';
