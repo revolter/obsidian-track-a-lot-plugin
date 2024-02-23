@@ -7,20 +7,21 @@ export class TrackablesUpdater {
 
 			return map;
 		}, {} as {[key: string]: T});
-
-		newTrackables.forEach( trackable => {
+		const syncedTrackables = newTrackables.map( trackable => {
 			const indexedCurrentTrackable = indexedCurrentTrackables[trackable.identifier];
 
 			if (indexedCurrentTrackable != null) {
-				trackable.status = indexedCurrentTrackable.status;
-
 				delete indexedCurrentTrackables[trackable.identifier];
+
+				return trackable.withStatus(indexedCurrentTrackable.status) as T;
+			} else {
+				return trackable;
 			}
 		});
 
 		const withdrawnTrackables = Object.keys(indexedCurrentTrackables).map(key => indexedCurrentTrackables[key]);
 		const withdrawnModifiedTrackables = withdrawnTrackables.filter(trackable => trackable.status !== '');
 
-		return [...newTrackables, ...withdrawnModifiedTrackables];
+		return [...syncedTrackables, ...withdrawnModifiedTrackables];
 	}
 }

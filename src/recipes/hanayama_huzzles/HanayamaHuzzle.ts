@@ -8,8 +8,12 @@ export class HanayamaHuzzle implements Trackable {
 		public readonly index: string,
 		public readonly name: string,
 		public readonly imageLinks: string[],
-		public status = ''
+		public readonly status = ''
 	) {
 		this.identifier = name;
+	}
+
+	withStatus(newStatus: string): Trackable {
+		return new HanayamaHuzzle(this.level, this.index, this.name, this.imageLinks, newStatus);
 	}
 }
