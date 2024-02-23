@@ -58,8 +58,9 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 		const withdrawnHuzzles = Object.keys(indexedCurrentHuzzles).map(key => indexedCurrentHuzzles[key]);
 		const withdrawnModifiedHuzzles = withdrawnHuzzles.filter(huzzle => huzzle.status !== '');
+		const updatedHuzzles = [...newHuzzles, ...withdrawnModifiedHuzzles];
 
-		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...newHuzzles, ...withdrawnModifiedHuzzles]);
+		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, updatedHuzzles);
 	}
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[]> {
