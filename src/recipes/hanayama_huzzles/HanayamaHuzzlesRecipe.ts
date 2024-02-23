@@ -39,14 +39,14 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		});
 	}
 
-	#updatedHuzzles(currentHuzzles: HanayamaHuzzle[], huzzles: HanayamaHuzzle[]): string {
+	#updatedHuzzles(currentHuzzles: HanayamaHuzzle[], newHuzzles: HanayamaHuzzle[]): string {
 		const indexedCurrentHuzzles = currentHuzzles.slice(1).reduce((map, huzzle) => {
 			map[huzzle.name] = huzzle;
 
 			return map;
 		}, {} as {[key: string]: HanayamaHuzzle});
 
-		huzzles.forEach( huzzle => {
+		newHuzzles.forEach( huzzle => {
 			const indexedCurrentHuzzle = indexedCurrentHuzzles[huzzle.name];
 
 			if (indexedCurrentHuzzle != null) {
@@ -59,7 +59,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const withdrawnHuzzles = Object.keys(indexedCurrentHuzzles).map(key => indexedCurrentHuzzles[key]);
 		const withdrawnModifiedHuzzles = withdrawnHuzzles.filter(huzzle => huzzle.status !== '');
 
-		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...huzzles, ...withdrawnModifiedHuzzles]);
+		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, [...newHuzzles, ...withdrawnModifiedHuzzles]);
 	}
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[]> {
