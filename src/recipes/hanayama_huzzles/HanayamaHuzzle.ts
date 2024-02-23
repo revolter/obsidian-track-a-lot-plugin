@@ -1,9 +1,9 @@
 export class HanayamaHuzzle {
 	constructor(
-		public level: string,
-		public index: string,
-		public name: string,
-		public imageLinks: string[],
+		public readonly level: string,
+		public readonly index: string,
+		public readonly name: string,
+		public readonly imageLinks: string[],
 		public status = ''
 	) {}
 }

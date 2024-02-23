@@ -4,7 +4,7 @@ import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
 import { SettingsManager } from './SettingsManager';
 
 export class RecipesSettingsTab extends PluginSettingTab {
-	constructor(app: App, plugin: Plugin, private settingsManager: SettingsManager) {
+	constructor(readonly app: App, readonly plugin: Plugin, private settingsManager: SettingsManager) {
 		super(app, plugin);
 	}
 
