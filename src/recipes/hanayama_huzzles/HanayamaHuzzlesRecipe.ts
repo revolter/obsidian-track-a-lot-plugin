@@ -14,8 +14,6 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	static NAME = 'Hanayama Huzzles';
 	static WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle';
 
-	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
-
 	static #HEADERS = ['Level', 'Index', 'Name', 'Picture', 'Status'];
 	static #SCRAPE_URLS = [
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-1-fun',
@@ -26,6 +24,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-6-grand-master',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/chess-puzzle'
 	];
+
+	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
 
 	async updatedListInContent(content: string): Promise<string> {
 		const escapedStartMarker = escapeStringRegExp(this.#marker.start);
