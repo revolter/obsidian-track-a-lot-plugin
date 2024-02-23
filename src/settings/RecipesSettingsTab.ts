@@ -22,26 +22,20 @@ export class RecipesSettingsTab extends PluginSettingTab {
 				this.#createTextElement('span', ' after toggling any recipe!')
 			));
 
+		const settings = this.settingsManager.settings;
+
 		this.#addToggle(
 			HanayamaHuzzlesRecipe.NAME,
 			HanayamaHuzzlesRecipe.WEBPAGE,
-			() => {
-				return this.settingsManager.settings.hanayamaHuzzles;
-			},
-			value => {
-				this.settingsManager.settings.hanayamaHuzzles = value;
-			}
+			() => { return settings.hanayamaHuzzles; },
+			value => { settings.hanayamaHuzzles = value; }
 		);
 
 		this.#addToggle(
 			IQPuzzlesRecipe.NAME,
 			IQPuzzlesRecipe.WEBPAGE,
-			() => {
-				return this.settingsManager.settings.iqPuzzles;
-			},
-			value => {
-				this.settingsManager.settings.iqPuzzles = value;
-			}
+			() => { return settings.iqPuzzles; },
+			value => { settings.iqPuzzles = value; }
 		);
 	}
 
