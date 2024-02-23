@@ -36,15 +36,10 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		return updater.update(content, async markdownList => {
 			const currentHuzzles = markdownList != null ? this.#markdownTableToHuzzles(markdownList) : [];
 			const newHuzzles = await this.#scrapeHuzzles();
+			const updatedHuzzles = this.trackablesUpdater.updatedTrackables(currentHuzzles, newHuzzles);
 
-			return this.#updatedHuzzles(currentHuzzles, newHuzzles);
+			return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, updatedHuzzles);
 		});
-	}
-
-	#updatedHuzzles(currentHuzzles: HanayamaHuzzle[], newHuzzles: HanayamaHuzzle[]): string {
-		const updatedHuzzles = this.trackablesUpdater.updatedTrackables(currentHuzzles, newHuzzles);
-
-		return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, updatedHuzzles);
 	}
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[]> {
