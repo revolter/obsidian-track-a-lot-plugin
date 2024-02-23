@@ -1,4 +1,5 @@
 import { Notice, Plugin } from 'obsidian';
+import { MarkdownTableFactory } from './markdown/MarkdownTableFactory';
 import { Recipe } from './recipes/Recipe';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { IQPuzzlesRecipe } from './recipes/iq_puzzles/IQPuzzlesRecipe';
@@ -13,8 +14,10 @@ export default class TrackALotPlugin extends Plugin {
 		const settingsTab = new RecipesSettingsTab(this.app, this, settingsManager);
 		this.addSettingTab(settingsTab);
 
+		const markdownTableFactory = new MarkdownTableFactory();
+
 		if (settingsManager.settings.hanayamaHuzzles) {
-			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe());
+			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(markdownTableFactory));
 		}
 
 		if (settingsManager.settings.iqPuzzles) {

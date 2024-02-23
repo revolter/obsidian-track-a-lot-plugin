@@ -1,8 +1,9 @@
-import { Image, PhrasingContent, Table, TableCell, TableRow, Text } from 'mdast';
+import { Table } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
 import { Root } from 'remark-gfm/lib';
+import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
 import { Recipe } from '../Recipe';
 import { RecipeMarkdownListUpdater } from '../RecipeMarkdownListUpdater';
@@ -25,6 +26,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	];
 
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
+
+	constructor(private markdownTableFactory: MarkdownTableFactory) {}
 
 	async updatedListInContent(content: string): Promise<string> {
 		const updater = new RecipeMarkdownListUpdater(this.#marker);
@@ -86,19 +89,21 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	#huzzlesToMarkdownTableString(headers: string[], huzzles: HanayamaHuzzle[]): string {
-		const headerRow = this.#tableRowNode(headers.map(header => this.#textTableCellNode(header)));
+		const headerRow = this.markdownTableFactory.tableRowNode(
+			headers.map(header => this.markdownTableFactory.textTableCellNode(header))
+		);
 		const huzzleRows = huzzles.map(huzzle =>
-			this.#tableRowNode([
-				this.#textTableCellNode(huzzle.level),
-				this.#textTableCellNode(huzzle.index),
-				this.#textTableCellNode(huzzle.name),
-				this.#tableCellNode(
-					this.#interleave(
-						huzzle.imageLinks.map(imageLink => this.#imageNode(imageLink, 100)),
-						this.#textNode(' ')
+			this.markdownTableFactory.tableRowNode([
+				this.markdownTableFactory.textTableCellNode(huzzle.level),
+				this.markdownTableFactory.textTableCellNode(huzzle.index),
+				this.markdownTableFactory.textTableCellNode(huzzle.name),
+				this.markdownTableFactory.tableCellNode(
+					this.markdownTableFactory.interleave(
+						huzzle.imageLinks.map(imageLink => this.markdownTableFactory.imageNode(imageLink, 100)),
+						this.markdownTableFactory.textNode(' ')
 					)
 				),
-				this.#textTableCellNode(huzzle.status)
+				this.markdownTableFactory.textTableCellNode(huzzle.status)
 			])
 		);
 		const tableRows = [
@@ -118,43 +123,6 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 			.use(remarkGFM)
 			.stringify(root)
 			.replace(/\n$/, '');
-	}
-
-	#tableRowNode(children: TableCell[]): TableRow {
-		return {
-			type: 'tableRow',
-			children: children
-		};
-	}
-
-	#textTableCellNode(text: string): TableCell {
-		return this.#tableCellNode([this.#textNode(text)]);
-	}
-
-	#tableCellNode(children: PhrasingContent[]): TableCell {
-		return {
-			type: 'tableCell',
-			children: children
-		};
-	}
-
-	#textNode(text: string): Text {
-		return {
-			type: 'text',
-			value: text
-		};
-	}
-
-	#imageNode(url: string, size: number): Image {
-		return {
-			type: 'image',
-			alt: `|${size}`,
-			url: url
-		};
-	}
-
-	#interleave<Array extends PhrasingContent, Separator extends PhrasingContent>(array: Array[], separator: Separator) {
-		return array.flatMap(element => [separator, element]).slice(1);
 	}
 
 	#markdownTableToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
