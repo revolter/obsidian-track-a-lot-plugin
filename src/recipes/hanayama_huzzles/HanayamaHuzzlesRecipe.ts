@@ -34,7 +34,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const updater = new RecipeMarkdownListUpdater(this.#marker);
 
 		return updater.update(content, async markdownList => {
-			const currentHuzzles = markdownList != null ? this.#markdownTableToHuzzles(markdownList) : [];
+			const currentHuzzles = markdownList != null ? this.#markdownTableStringToHuzzles(markdownList) : [];
 			const newHuzzles = await this.#scrapeHuzzles();
 			const updatedHuzzles = this.trackablesUpdater.updatedTrackables(currentHuzzles, newHuzzles);
 
@@ -90,7 +90,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		return this.markdownTableConverter.tableToString(table);
 	}
 
-	#markdownTableToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
+	#markdownTableStringToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
 		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
 		const imageLinksRegex = new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
 
