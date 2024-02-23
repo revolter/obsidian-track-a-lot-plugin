@@ -1,4 +1,5 @@
 import { Notice, Plugin } from 'obsidian';
+import { MarkdownTableConverter } from './markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from './markdown/MarkdownTableFactory';
 import { Recipe } from './recipes/Recipe';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
@@ -15,9 +16,10 @@ export default class TrackALotPlugin extends Plugin {
 		this.addSettingTab(settingsTab);
 
 		const markdownTableFactory = new MarkdownTableFactory();
+		const markdownTableConverter = new MarkdownTableConverter();
 
 		if (settingsManager.settings.hanayamaHuzzles) {
-			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(markdownTableFactory));
+			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(markdownTableFactory, markdownTableConverter));
 		}
 
 		if (settingsManager.settings.iqPuzzles) {

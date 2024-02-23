@@ -1,7 +1,8 @@
-import { Root, Table } from 'mdast';
+import { Table } from 'mdast';
 import { toString } from 'mdast-util-to-string';
 import { remark } from 'remark';
 import remarkGFM from 'remark-gfm';
+import { MarkdownTableConverter } from 'src/markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
 import { Recipe } from '../Recipe';
@@ -26,7 +27,10 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
 
-	constructor(private markdownTableFactory: MarkdownTableFactory) {}
+	constructor(
+		private markdownTableFactory: MarkdownTableFactory,
+		private markdownTableConverter: MarkdownTableConverter
+	) {}
 
 	async updatedListInContent(content: string): Promise<string> {
 		const updater = new RecipeMarkdownListUpdater(this.#marker);
@@ -106,15 +110,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 			])
 		);
 		const table = this.markdownTableFactory.table(headerRow, huzzleRows);
-		const root: Root = {
-			type: 'root',
-			children: [table]
-		};
 
-		return remark()
-			.use(remarkGFM)
-			.stringify(root)
-			.replace(/\n$/, '');
+		return this.markdownTableConverter.tableToString(table);
 	}
 
 	#markdownTableToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
