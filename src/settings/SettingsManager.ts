@@ -1,5 +1,5 @@
 import { Plugin } from 'obsidian';
-import { RecipesPluginSettings } from './RecipesPluginSettings';
+import { RecipesPluginSettings } from './data/RecipesPluginSettings';
 
 export class SettingsManager {
 	static #DEFAULT_SETTINGS: Partial<RecipesPluginSettings> = {
