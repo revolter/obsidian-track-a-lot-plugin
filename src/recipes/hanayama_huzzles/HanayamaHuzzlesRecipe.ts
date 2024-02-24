@@ -98,7 +98,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 	#markdownTableStringToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
 		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
-		const imageLinksRegex = new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
+		const imageLinkRegex = new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
 
 		return arrayOfArrays.flatMap(array => {
 			if (array.length < 5) {
@@ -110,7 +110,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 			const name = array[2];
 
 			const images = array[3];
-			const imageLinkMatches = images.matchAll(imageLinksRegex);
+			const imageLinkMatches = images.matchAll(imageLinkRegex);
 			const imageLinks = Array.from(imageLinkMatches).flatMap(match => {
 				if (match == null || match.groups == null) {
 					return [];
