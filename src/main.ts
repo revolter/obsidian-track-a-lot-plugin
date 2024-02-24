@@ -29,7 +29,11 @@ export default class TrackALotPlugin extends Plugin {
 		}
 
 		if (settingsManager.settings.iqPuzzles) {
-			this.#addCommand(IQPuzzlesRecipe.NAME, new IQPuzzlesRecipe());
+			this.#addCommand(IQPuzzlesRecipe.NAME, new IQPuzzlesRecipe(
+				markdownTableFactory,
+				markdownTableConverter,
+				trackablesUpdater
+			));
 		}
 	}
 

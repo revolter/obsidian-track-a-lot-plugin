@@ -24,6 +24,10 @@ export class MarkdownTableFactory {
 		return this.tableCellNode([this.textNode(text)]);
 	}
 
+	imageTableCellNode(url: string, size: number): TableCell {
+		return this.tableCellNode([this.imageNode(url, size)]);
+	}
+
 	tableCellNode(contents: PhrasingContent[]): TableCell {
 		return {
 			type: 'tableCell',
