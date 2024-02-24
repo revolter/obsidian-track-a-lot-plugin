@@ -4,9 +4,9 @@ import { RegexFactory } from 'src/regex/RegexFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
 import { TrackablesUpdater } from 'src/tracking/TrackablesUpdater';
 import { Recipe } from '../Recipe';
-import { RecipeListUpdater } from '../RecipeListUpdater';
-import { RecipeMarkdownListUpdater } from '../RecipeMarkdownListUpdater';
-import { RecipeMarker } from '../RecipeMarker';
+import { RecipeListUpdater } from '../helpers/RecipeListUpdater';
+import { RecipeMarkdownListUpdater } from '../helpers/RecipeMarkdownListUpdater';
+import { RecipeMarker } from '../helpers/RecipeMarker';
 import { IQPuzzle } from './IQPuzzle';
 
 export class IQPuzzlesRecipe implements Recipe {
