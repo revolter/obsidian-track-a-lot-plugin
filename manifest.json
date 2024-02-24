@@ -3,7 +3,7 @@
 	"name": "Track-a-Lot",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "This scrapes different webpages, builds Markdown tables with the information, and allows you to manually track them using a status column.",
+	"description": "Scrapes different webpages, builds lists with the items as Markdown tables, and allows you to track their status.",
 	"author": "Iulian Onofrei",
 	"authorUrl": "https://iulianonofrei.com",
 	"fundingUrl": "https://paypal.me/IulianOnofrei",
