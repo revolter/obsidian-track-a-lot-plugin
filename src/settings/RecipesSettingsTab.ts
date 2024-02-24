@@ -27,19 +27,24 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		this.#addToggle(
 			HanayamaHuzzlesRecipe.NAME,
 			HanayamaHuzzlesRecipe.WEBPAGE,
-			() => { return settings.hanayamaHuzzles; },
-			value => { settings.hanayamaHuzzles = value; }
+			() => { return settings.hanayamaHuzzles.isActive; },
+			value => { settings.hanayamaHuzzles.isActive = value; }
 		);
 
 		this.#addToggle(
 			IQPuzzlesRecipe.NAME,
 			IQPuzzlesRecipe.WEBPAGE,
-			() => { return settings.iqPuzzles; },
-			value => { settings.iqPuzzles = value; }
+			() => { return settings.iqPuzzles.isActive; },
+			value => { settings.iqPuzzles.isActive = value; }
 		);
 	}
 
-	#addToggle(name: string, webpage: string, getter: () => boolean, setter: (value: boolean) => void) {
+	#addToggle(
+		name: string,
+		webpage: string,
+		getter: () => boolean,
+		setter: (value: boolean) => void
+	) {
 		const webpageLink = this.#createDescriptionLink(webpage);
 		new Setting(this.containerEl)
 			.setName(name)

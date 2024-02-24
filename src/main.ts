@@ -20,7 +20,7 @@ export default class TrackALotPlugin extends Plugin {
 		const markdownTableConverter = new MarkdownTableConverter();
 		const trackablesUpdater = new TrackablesUpdater();
 
-		if (settingsManager.settings.hanayamaHuzzles) {
+		if (settingsManager.settings.hanayamaHuzzles.isActive) {
 			this.#addCommand(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(
 				markdownTableFactory,
 				markdownTableConverter,
@@ -28,7 +28,7 @@ export default class TrackALotPlugin extends Plugin {
 			));
 		}
 
-		if (settingsManager.settings.iqPuzzles) {
+		if (settingsManager.settings.iqPuzzles.isActive) {
 			this.#addCommand(IQPuzzlesRecipe.NAME, new IQPuzzlesRecipe(
 				markdownTableFactory,
 				markdownTableConverter,
