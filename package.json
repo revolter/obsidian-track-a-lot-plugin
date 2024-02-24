@@ -1,6 +1,6 @@
 {
 	"name": "obsidian-track-a-lot-plugin",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "This is a tracker plugin for Obsidian (https://obsidian.md)",
 	"main": "main.js",
 	"scripts": {
