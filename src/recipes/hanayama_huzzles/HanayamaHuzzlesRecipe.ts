@@ -3,6 +3,7 @@ import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
 import { TrackablesUpdater } from 'src/tracking/TrackablesUpdater';
 import { Recipe } from '../Recipe';
+import { RecipeListUpdater } from '../RecipeListUpdater';
 import { RecipeMarkdownListUpdater } from '../RecipeMarkdownListUpdater';
 import { RecipeMarker } from '../RecipeMarker';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
@@ -31,15 +32,20 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	) {}
 
 	async updatedListInContent(content: string): Promise<string> {
-		const updater = new RecipeMarkdownListUpdater(this.#marker);
+		const markdownUpdater = new RecipeMarkdownListUpdater(this.#marker);
+		const updater = new RecipeListUpdater<HanayamaHuzzle>(
+			HanayamaHuzzlesRecipe.#HEADERS,
+			markdownUpdater,
+			this.trackablesUpdater
+		);
 
-		return updater.update(content, async markdownList => {
-			const currentHuzzles = markdownList != null ? this.#markdownTableStringToHuzzles(markdownList) : [];
-			const newHuzzles = await this.#scrapeHuzzles();
-			const updatedHuzzles = this.trackablesUpdater.updatedTrackables(currentHuzzles, newHuzzles);
+		return await updater.update(
+			content,
 
-			return this.#huzzlesToMarkdownTableString(HanayamaHuzzlesRecipe.#HEADERS, updatedHuzzles);
-		});
+			this.#markdownTableStringToHuzzles.bind(this),
+			this.#scrapeHuzzles.bind(this),
+			this.#huzzlesToMarkdownTableString.bind(this)
+		);
 	}
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[]> {
