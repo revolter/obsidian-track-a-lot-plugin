@@ -1,6 +1,7 @@
-import { Notice, Plugin } from 'obsidian';
+import { Plugin } from 'obsidian';
 import { MarkdownTableConverter } from './markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from './markdown/MarkdownTableFactory';
+import { PluginUpdateCommandFactory } from './plugin/PluginUpdateCommandFactory';
 import { Recipe } from './recipes/Recipe';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { IQPuzzlesRecipe } from './recipes/iq_puzzles/IQPuzzlesRecipe';
@@ -40,27 +41,8 @@ export default class TrackALotPlugin extends Plugin {
 	onunload() {}
 
 	#addCommand(name: string, recipe: Recipe) {
-		this.addCommand({
-			id: this.#identifier(`update-${name}-list`),
-			name: `Update ${name} list`,
-			editorCallback: (editor, _view) => {
-				const content = editor.getValue();
+		const factory = new PluginUpdateCommandFactory();
 
-				new Notice(`${name} list update started`);
-				const startDate = new Date();
-
-				recipe.updatedListInContent(content).then( newContent => {
-					editor.setValue(newContent);
-
-					const endDate = new Date();
-					const seconds = (endDate.getTime() - startDate.getTime()) / 1000;
-					new Notice(`${name} list update finished in ${seconds} seconds`);
-				});
-			}
-		});
-	}
-
-	#identifier(name: string): string {
-		return name.toLowerCase().replace(' ', '-');
+		this.addCommand(factory.command(name, recipe));
 	}
 }
