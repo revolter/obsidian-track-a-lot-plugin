@@ -1,5 +1,6 @@
 import { MarkdownTableConverter } from 'src/markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
+import { RegexFactory } from 'src/regex/RegexFactory';
 import { WebsiteScraper } from 'src/scraping/WebsiteScraper';
 import { TrackablesUpdater } from 'src/tracking/TrackablesUpdater';
 import { Recipe } from '../Recipe';
@@ -98,7 +99,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 	#markdownTableStringToHuzzles(markdownTableString: string): HanayamaHuzzle[] {
 		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
-		const imageLinkRegex = new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
+		const imageLinkRegex = new RegexFactory().imageMarkdownLinkRegex();
 
 		return arrayOfArrays.flatMap(array => {
 			if (array.length < 5) {
