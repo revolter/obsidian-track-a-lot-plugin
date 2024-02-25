@@ -4,7 +4,7 @@ import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/IQPuzzlesRecipeS
 import { RecipesPluginSettings } from './data/RecipesPluginSettings';
 
 export class SettingsManager {
-	static #DEFAULT_SETTINGS: Partial<RecipesPluginSettings> = {
+	static readonly #DEFAULT_SETTINGS: Partial<RecipesPluginSettings> = {
 		hanayamaHuzzles: new HanayamaHuzzlesRecipeSettings(),
 		iqPuzzles: new IQPuzzlesRecipeSettings()
 	};

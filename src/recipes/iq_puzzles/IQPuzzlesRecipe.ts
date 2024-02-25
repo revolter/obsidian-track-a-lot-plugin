@@ -10,11 +10,11 @@ import { RecipeMarker } from '../helpers/RecipeMarker';
 import { IQPuzzle } from './IQPuzzle';
 
 export class IQPuzzlesRecipe implements Recipe {
-	static NAME = 'IQ Puzzles';
-	static WEBPAGE = 'https://www.iqpuzzle.com';
+	static readonly NAME = 'IQ Puzzles';
+	static readonly WEBPAGE = 'https://www.iqpuzzle.com';
 
-	static #HEADERS = ['Name', 'Picture', 'Status'];
-	static #SCRAPE_URL = 'https://www.iqpuzzle.com';
+	static readonly #HEADERS = ['Name', 'Picture', 'Status'];
+	static readonly #SCRAPE_URL = 'https://www.iqpuzzle.com';
 
 	#marker = new RecipeMarker(IQPuzzlesRecipe.NAME);
 
