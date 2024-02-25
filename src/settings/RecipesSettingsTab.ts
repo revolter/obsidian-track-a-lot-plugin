@@ -1,11 +1,12 @@
 import { App, Plugin, PluginSettingTab } from 'obsidian';
 import 'src/html/HTMLElementExtensions';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
+import { HanayamaHuzzlesRecipeSettings } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipeSettings';
 import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
+import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/IQPuzzlesRecipeSettings';
 import { RecipeSettingsAdder } from './RecipeSettingsAdder';
 import { SettingsAdder } from './SettingsAdder';
 import { SettingsManager } from './SettingsManager';
-import { RecipesPluginSettings } from './data/RecipesPluginSettings';
 
 export class RecipesSettingsTab extends PluginSettingTab {
 	constructor(readonly app: App, readonly plugin: Plugin, private settingsManager: SettingsManager) {
@@ -32,29 +33,29 @@ export class RecipesSettingsTab extends PluginSettingTab {
 
 		const settings = this.settingsManager.settings;
 
-		this.#addHanayamaHuzzlesSettings(settings, settingsAdder);
-		this.#addIQPuzzlesSettings(settings, settingsAdder);
+		this.#addHanayamaHuzzlesSettings(settings.hanayamaHuzzles, settingsAdder);
+		this.#addIQPuzzlesSettings(settings.iqPuzzles, settingsAdder);
 	}
 
-	#addHanayamaHuzzlesSettings(settings: RecipesPluginSettings, settingsAdder: SettingsAdder) {
+	#addHanayamaHuzzlesSettings(settings: HanayamaHuzzlesRecipeSettings, settingsAdder: SettingsAdder) {
 		const hanayamaHuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
 		hanayamaHuzzlesRecipeSettingsAdder.add(HanayamaHuzzlesRecipe.NAME, HanayamaHuzzlesRecipe.WEBPAGE);
 		hanayamaHuzzlesRecipeSettingsAdder.activate(
-			() => { return settings.hanayamaHuzzles.isActive; },
+			() => { return settings.isActive; },
 			async value => {
-				settings.hanayamaHuzzles.isActive = value;
+				settings.isActive = value;
 				await this.settingsManager.saveSettings();
 			}
 		);
 	}
 
-	#addIQPuzzlesSettings(settings: RecipesPluginSettings, settingsAdder: SettingsAdder) {
+	#addIQPuzzlesSettings(settings: IQPuzzlesRecipeSettings, settingsAdder: SettingsAdder) {
 		const iqPuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
 		iqPuzzlesRecipeSettingsAdder.add(IQPuzzlesRecipe.NAME, IQPuzzlesRecipe.WEBPAGE);
 		iqPuzzlesRecipeSettingsAdder.activate(
-			() => { return settings.iqPuzzles.isActive; },
+			() => { return settings.isActive; },
 			async value => {
-				settings.iqPuzzles.isActive = value;
+				settings.isActive = value;
 				await this.settingsManager.saveSettings();
 			}
 		);
