@@ -46,11 +46,18 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		getter: () => boolean,
 		setter: (value: boolean) => void
 	) {
-		const webpageLink = this.containerEl.createLink(webpage, { cls: 'setting-item-description' });
+		this.containerEl.createText('h3', name, { cls: 'no-bottom-margin' });
+		this.containerEl.createLink(webpage, { cls: ['setting-item-description', 'default-bottom-margin'] });
 
 		new Setting(this.containerEl)
-			.setName(name)
-			.setDesc(this.containerEl.createFragment(webpageLink))
+			.setName('Active')
+			.setDesc(
+				this.containerEl.createFragment(
+					this.containerEl.createText('span', 'Whether this list shows up in the '),
+					this.containerEl.createText('code', 'Command palette'),
+					this.containerEl.createText('span', ' or not.')
+				)
+			)
 			.addToggle(toggle => {
 				return toggle
 					.setValue(getter())

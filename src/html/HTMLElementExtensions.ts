@@ -1,13 +1,17 @@
 declare global {
 	interface HTMLElement {
-		createText<K extends keyof HTMLElementTagNameMap>(type: K, text: string): HTMLElementTagNameMap[K];
+		createText<K extends keyof HTMLElementTagNameMap>(type: K, text: string, info?: DomElementInfo): HTMLElementTagNameMap[K];
 		createLink(url: string, info?: DomElementInfo): HTMLAnchorElement;
 		createFragment(...elements: HTMLElement[]): DocumentFragment;
 	}
 }
 
-HTMLElement.prototype.createText = function <K extends keyof HTMLElementTagNameMap>(type: K, text: string): HTMLElementTagNameMap[K] {
-	return this.createEl(type, { text: text });
+HTMLElement.prototype.createText = function <K extends keyof HTMLElementTagNameMap>(
+	type: K,
+	text: string,
+	info?: DomElementInfo
+): HTMLElementTagNameMap[K] {
+	return this.createEl(type, Object.assign({ text: text }, info || {}));
 };
 
 HTMLElement.prototype.createLink = function(url: string, info?: DomElementInfo): HTMLAnchorElement {

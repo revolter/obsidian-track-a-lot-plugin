@@ -1,8 +1,8 @@
-/*
+.no-bottom-margin {
+	margin-block-end: 0;
+}
 
-This CSS file will be included with your plugin, and
-available in the app when your plugin is enabled.
-
-If your plugin does not need CSS, delete this file.
-
-*/
+.default-bottom-margin {
+	display: inline-block;
+	margin-block-end: var(--p-spacing);
+}
