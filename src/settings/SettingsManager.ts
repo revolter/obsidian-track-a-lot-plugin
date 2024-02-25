@@ -1,15 +1,15 @@
 import { Plugin } from 'obsidian';
 import { HanayamaHuzzlesRecipeSettings } from 'src/recipes/hanayama_huzzles/settings/HanayamaHuzzlesRecipeSettings';
 import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/settings/IQPuzzlesRecipeSettings';
-import { RecipesPluginSettings } from './data/RecipesPluginSettings';
+import { RecipesSettings } from './data/RecipesSettings';
 
 export class SettingsManager {
-	static readonly #DEFAULT_SETTINGS: Partial<RecipesPluginSettings> = {
+	static readonly #DEFAULT_SETTINGS: Partial<RecipesSettings> = {
 		hanayamaHuzzles: new HanayamaHuzzlesRecipeSettings(),
 		iqPuzzles: new IQPuzzlesRecipeSettings()
 	};
 
-	settings: RecipesPluginSettings;
+	settings: RecipesSettings;
 
 	constructor(private plugin: Plugin) {}
 
