@@ -46,7 +46,8 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		getter: () => boolean,
 		setter: (value: boolean) => void
 	) {
-		const webpageLink = this.#createDescriptionLink(webpage);
+		const webpageLink = this.containerEl.createLink(webpage, { cls: 'setting-item-description' });
+
 		new Setting(this.containerEl)
 			.setName(name)
 			.setDesc(this.containerEl.createFragment(webpageLink))
@@ -58,9 +59,5 @@ export class RecipesSettingsTab extends PluginSettingTab {
 						await this.settingsManager.saveSettings();
 					});
 			});
-	}
-
-	#createDescriptionLink(url: string): HTMLAnchorElement {
-		return this.containerEl.createEl('a', { cls: 'setting-item-description', href: url, text: url});
 	}
 }
