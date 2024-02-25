@@ -1,4 +1,5 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import 'src/html/HTMLElementExtensions';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
 import { SettingsManager } from './SettingsManager';
@@ -16,7 +17,7 @@ export class RecipesSettingsTab extends PluginSettingTab {
 			.setHeading();
 
 		new Setting(this.containerEl)
-			.setDesc(this.#createFragment(
+			.setDesc(this.containerEl.createFragment(
 				this.#createTextElement('span', '⚠️ Due to Obsidian Plugin limitations, you have to disable and re-enable the plugin from '),
 				this.#createTextElement('code', 'Settings > Community plugins > Installed plugins'),
 				this.#createTextElement('span', ' after toggling any recipe!')
@@ -48,7 +49,7 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		const webpageLink = this.#createDescriptionLink(webpage);
 		new Setting(this.containerEl)
 			.setName(name)
-			.setDesc(this.#createFragment(webpageLink))
+			.setDesc(this.containerEl.createFragment(webpageLink))
 			.addToggle(toggle => {
 				return toggle
 					.setValue(getter())
@@ -65,12 +66,5 @@ export class RecipesSettingsTab extends PluginSettingTab {
 
 	#createTextElement<K extends keyof HTMLElementTagNameMap>(type: K, text: string): HTMLElementTagNameMap[K] {
 		return this.containerEl.createEl(type, { text: text });
-	}
-
-	#createFragment(...elements: HTMLElement[]): DocumentFragment {
-		const fragment = new DocumentFragment();
-		fragment.append(...elements);
-
-		return fragment;
 	}
 }
