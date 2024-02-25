@@ -1,7 +1,8 @@
-import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
+import { App, Plugin, PluginSettingTab } from 'obsidian';
 import 'src/html/HTMLElementExtensions';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
+import { SettingsAdder } from './SettingsAdder';
 import { SettingsManager } from './SettingsManager';
 
 export class RecipesSettingsTab extends PluginSettingTab {
@@ -12,22 +13,27 @@ export class RecipesSettingsTab extends PluginSettingTab {
 	display(): void {
 		this.containerEl.empty();
 
-		new Setting(this.containerEl)
-			.setName('Recipes')
+		const settingsAdder = new SettingsAdder(this.containerEl);
+
+		settingsAdder
+			.add('Recipes')
 			.setHeading();
 
-		new Setting(this.containerEl)
-			.setDesc(this.containerEl.createFragment(
+		settingsAdder.add(
+			'',
+			this.containerEl.createFragment(
 				this.containerEl.createText('span', '⚠️ Due to Obsidian Plugin limitations, you have to disable and re-enable the plugin from '),
 				this.containerEl.createText('code', 'Settings > Community plugins > Installed plugins'),
 				this.containerEl.createText('span', ' after toggling any recipe!')
-			));
+			)
+		);
 
 		const settings = this.settingsManager.settings;
 
 		this.#addToggle(
 			HanayamaHuzzlesRecipe.NAME,
 			HanayamaHuzzlesRecipe.WEBPAGE,
+			settingsAdder,
 			() => { return settings.hanayamaHuzzles.isActive; },
 			value => { settings.hanayamaHuzzles.isActive = value; }
 		);
@@ -35,6 +41,7 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		this.#addToggle(
 			IQPuzzlesRecipe.NAME,
 			IQPuzzlesRecipe.WEBPAGE,
+			settingsAdder,
 			() => { return settings.iqPuzzles.isActive; },
 			value => { settings.iqPuzzles.isActive = value; }
 		);
@@ -43,14 +50,15 @@ export class RecipesSettingsTab extends PluginSettingTab {
 	#addToggle(
 		name: string,
 		webpage: string,
+		settingsAdder: SettingsAdder,
 		getter: () => boolean,
 		setter: (value: boolean) => void
 	) {
 		this.#addSettingHeader(name, webpage);
 
-		new Setting(this.containerEl)
-			.setName('Active')
-			.setDesc(
+		settingsAdder
+			.add(
+				'Active',
 				this.containerEl.createFragment(
 					this.containerEl.createText('span', 'Whether this list shows up in the '),
 					this.containerEl.createText('code', 'Command palette'),
