@@ -18,9 +18,9 @@ export class RecipesSettingsTab extends PluginSettingTab {
 
 		new Setting(this.containerEl)
 			.setDesc(this.containerEl.createFragment(
-				this.#createTextElement('span', '⚠️ Due to Obsidian Plugin limitations, you have to disable and re-enable the plugin from '),
-				this.#createTextElement('code', 'Settings > Community plugins > Installed plugins'),
-				this.#createTextElement('span', ' after toggling any recipe!')
+				this.containerEl.createText('span', '⚠️ Due to Obsidian Plugin limitations, you have to disable and re-enable the plugin from '),
+				this.containerEl.createText('code', 'Settings > Community plugins > Installed plugins'),
+				this.containerEl.createText('span', ' after toggling any recipe!')
 			));
 
 		const settings = this.settingsManager.settings;
@@ -62,9 +62,5 @@ export class RecipesSettingsTab extends PluginSettingTab {
 
 	#createDescriptionLink(url: string): HTMLAnchorElement {
 		return this.containerEl.createEl('a', { cls: 'setting-item-description', href: url, text: url});
-	}
-
-	#createTextElement<K extends keyof HTMLElementTagNameMap>(type: K, text: string): HTMLElementTagNameMap[K] {
-		return this.containerEl.createEl(type, { text: text });
 	}
 }
