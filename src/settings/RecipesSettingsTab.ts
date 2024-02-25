@@ -46,8 +46,7 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		getter: () => boolean,
 		setter: (value: boolean) => void
 	) {
-		this.containerEl.createText('h3', name, { cls: 'no-bottom-margin' });
-		this.containerEl.createLink(webpage, { cls: ['setting-item-description', 'default-bottom-margin'] });
+		this.#addSettingHeader(name, webpage);
 
 		new Setting(this.containerEl)
 			.setName('Active')
@@ -66,5 +65,10 @@ export class RecipesSettingsTab extends PluginSettingTab {
 						await this.settingsManager.saveSettings();
 					});
 			});
+	}
+
+	#addSettingHeader(name: string, webpage: string) {
+		this.containerEl.createText('h3', name, { cls: 'no-bottom-margin' });
+		this.containerEl.createLink(webpage, { cls: ['setting-item-description', 'default-bottom-margin'] });
 	}
 }
