@@ -2,6 +2,7 @@ import { App, Plugin, PluginSettingTab } from 'obsidian';
 import 'src/html/HTMLElementExtensions';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
+import { RecipeSettingsAdder } from './RecipeSettingsAdder';
 import { SettingsAdder } from './SettingsAdder';
 import { SettingsManager } from './SettingsManager';
 
@@ -30,53 +31,24 @@ export class RecipesSettingsTab extends PluginSettingTab {
 
 		const settings = this.settingsManager.settings;
 
-		this.#addToggle(
-			HanayamaHuzzlesRecipe.NAME,
-			HanayamaHuzzlesRecipe.WEBPAGE,
-			settingsAdder,
+		const hanayamaHuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
+		hanayamaHuzzlesRecipeSettingsAdder.add(HanayamaHuzzlesRecipe.NAME, HanayamaHuzzlesRecipe.WEBPAGE);
+		hanayamaHuzzlesRecipeSettingsAdder.activate(
 			() => { return settings.hanayamaHuzzles.isActive; },
-			value => { settings.hanayamaHuzzles.isActive = value; }
+			async value => {
+				settings.hanayamaHuzzles.isActive = value;
+				await this.settingsManager.saveSettings();
+			}
 		);
 
-		this.#addToggle(
-			IQPuzzlesRecipe.NAME,
-			IQPuzzlesRecipe.WEBPAGE,
-			settingsAdder,
+		const iqPuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
+		iqPuzzlesRecipeSettingsAdder.add(IQPuzzlesRecipe.NAME, IQPuzzlesRecipe.WEBPAGE);
+		iqPuzzlesRecipeSettingsAdder.activate(
 			() => { return settings.iqPuzzles.isActive; },
-			value => { settings.iqPuzzles.isActive = value; }
+			async value => {
+				settings.iqPuzzles.isActive = value;
+				await this.settingsManager.saveSettings();
+			}
 		);
-	}
-
-	#addToggle(
-		name: string,
-		webpage: string,
-		settingsAdder: SettingsAdder,
-		getter: () => boolean,
-		setter: (value: boolean) => void
-	) {
-		this.#addSettingHeader(name, webpage);
-
-		settingsAdder
-			.add(
-				'Active',
-				this.containerEl.createFragment(
-					this.containerEl.createText('span', 'Whether this list shows up in the '),
-					this.containerEl.createText('code', 'Command palette'),
-					this.containerEl.createText('span', ' or not.')
-				)
-			)
-			.addToggle(toggle => {
-				return toggle
-					.setValue(getter())
-					.onChange(async (value) => {
-						setter(value);
-						await this.settingsManager.saveSettings();
-					});
-			});
-	}
-
-	#addSettingHeader(name: string, webpage: string) {
-		this.containerEl.createText('h3', name, { cls: 'no-bottom-margin' });
-		this.containerEl.createLink(webpage, { cls: ['setting-item-description', 'default-bottom-margin'] });
 	}
 }
