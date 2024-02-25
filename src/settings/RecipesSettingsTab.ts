@@ -5,6 +5,7 @@ import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
 import { RecipeSettingsAdder } from './RecipeSettingsAdder';
 import { SettingsAdder } from './SettingsAdder';
 import { SettingsManager } from './SettingsManager';
+import { RecipesPluginSettings } from './data/RecipesPluginSettings';
 
 export class RecipesSettingsTab extends PluginSettingTab {
 	constructor(readonly app: App, readonly plugin: Plugin, private settingsManager: SettingsManager) {
@@ -31,6 +32,11 @@ export class RecipesSettingsTab extends PluginSettingTab {
 
 		const settings = this.settingsManager.settings;
 
+		this.#addHanayamaHuzzlesSettings(settings, settingsAdder);
+		this.#addIQPuzzlesSettings(settings, settingsAdder);
+	}
+
+	#addHanayamaHuzzlesSettings(settings: RecipesPluginSettings, settingsAdder: SettingsAdder) {
 		const hanayamaHuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
 		hanayamaHuzzlesRecipeSettingsAdder.add(HanayamaHuzzlesRecipe.NAME, HanayamaHuzzlesRecipe.WEBPAGE);
 		hanayamaHuzzlesRecipeSettingsAdder.activate(
@@ -40,7 +46,9 @@ export class RecipesSettingsTab extends PluginSettingTab {
 				await this.settingsManager.saveSettings();
 			}
 		);
+	}
 
+	#addIQPuzzlesSettings(settings: RecipesPluginSettings, settingsAdder: SettingsAdder) {
 		const iqPuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
 		iqPuzzlesRecipeSettingsAdder.add(IQPuzzlesRecipe.NAME, IQPuzzlesRecipe.WEBPAGE);
 		iqPuzzlesRecipeSettingsAdder.activate(
