@@ -13,7 +13,7 @@ export class IQPuzzlesRecipe implements Recipe {
 	static readonly NAME = 'IQ Puzzles';
 	static readonly WEBPAGE = 'https://www.iqpuzzle.com';
 
-	static readonly #HEADERS = ['Name', 'Picture', 'Status'];
+	static readonly #HEADERS: readonly string[] = ['Name', 'Picture', 'Status'];
 	static readonly #SCRAPE_URL = 'https://www.iqpuzzle.com';
 
 	#marker = new RecipeMarker(IQPuzzlesRecipe.NAME);

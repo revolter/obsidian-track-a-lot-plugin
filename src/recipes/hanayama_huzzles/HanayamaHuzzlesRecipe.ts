@@ -13,8 +13,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	static readonly NAME = 'Hanayama Huzzles';
 	static readonly WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle';
 
-	static readonly #HEADERS = ['Level', 'Index', 'Name', 'Picture', 'Status'];
-	static readonly #SCRAPE_URLS = [
+	static readonly #HEADERS: readonly string[] = ['Level', 'Index', 'Name', 'Picture', 'Status'];
+	static readonly #SCRAPE_URLS: readonly string[] = [
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-1-fun',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-2-easy',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-3-normal',

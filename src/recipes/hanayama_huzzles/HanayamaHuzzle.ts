@@ -7,7 +7,7 @@ export class HanayamaHuzzle implements Trackable {
 		public readonly level: string,
 		public readonly index: string,
 		public readonly name: string,
-		public readonly imageLinks: string[],
+		public readonly imageLinks: readonly string[],
 		public readonly status = ''
 	) {
 		this.identifier = name;
