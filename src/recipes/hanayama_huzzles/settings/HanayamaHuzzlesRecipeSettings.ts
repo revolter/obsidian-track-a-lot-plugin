@@ -2,4 +2,5 @@ import { RecipeSettingsToggleable } from 'src/settings/data/RecipeSettingsToggle
 
 export class HanayamaHuzzlesRecipeSettings implements RecipeSettingsToggleable {
 	isActive: boolean;
+	includeChessPuzzles = true;
 }

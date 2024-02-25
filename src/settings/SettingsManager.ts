@@ -1,6 +1,6 @@
 import { Plugin } from 'obsidian';
-import { HanayamaHuzzlesRecipeSettings } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipeSettings';
-import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/IQPuzzlesRecipeSettings';
+import { HanayamaHuzzlesRecipeSettings } from 'src/recipes/hanayama_huzzles/settings/HanayamaHuzzlesRecipeSettings';
+import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/settings/IQPuzzlesRecipeSettings';
 import { RecipesPluginSettings } from './data/RecipesPluginSettings';
 
 export class SettingsManager {

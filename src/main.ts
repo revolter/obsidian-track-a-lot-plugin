@@ -25,7 +25,8 @@ export default class TrackALotPlugin extends Plugin {
 			const command = commandFactory.command(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(
 				markdownTableFactory,
 				markdownTableConverter,
-				trackablesUpdater
+				trackablesUpdater,
+				settingsManager.settings.hanayamaHuzzles
 			));
 
 			this.addCommand(command);

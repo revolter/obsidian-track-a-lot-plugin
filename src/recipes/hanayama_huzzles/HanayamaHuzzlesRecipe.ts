@@ -8,10 +8,12 @@ import { RecipeListUpdater } from '../helpers/RecipeListUpdater';
 import { RecipeMarkdownListUpdater } from '../helpers/RecipeMarkdownListUpdater';
 import { RecipeMarker } from '../helpers/RecipeMarker';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
+import { HanayamaHuzzlesRecipeSettings } from './settings/HanayamaHuzzlesRecipeSettings';
 
 export class HanayamaHuzzlesRecipe implements Recipe {
 	static readonly NAME = 'Hanayama Huzzles';
 	static readonly WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle';
+	static readonly CHESS_PUZZLES_WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle/chess-puzzle';
 
 	static readonly #HEADERS: readonly string[] = ['Level', 'Index', 'Name', 'Picture', 'Status'];
 	static readonly #SCRAPE_URLS: readonly string[] = [
@@ -20,8 +22,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-3-normal',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-4-hard',
 		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-5-expert',
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-6-grand-master',
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/chess-puzzle'
+		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-6-grand-master'
 	];
 
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
@@ -29,7 +30,8 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	constructor(
 		private markdownTableFactory: MarkdownTableFactory,
 		private markdownTableConverter: MarkdownTableConverter,
-		private trackablesUpdater: TrackablesUpdater
+		private trackablesUpdater: TrackablesUpdater,
+		private settings: HanayamaHuzzlesRecipeSettings
 	) {}
 
 	async updatedListInContent(content: string): Promise<string> {
@@ -51,7 +53,12 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[]> {
 		const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
-		const scraper = new WebsiteScraper(HanayamaHuzzlesRecipe.#SCRAPE_URLS);
+
+		const urls = [...HanayamaHuzzlesRecipe.#SCRAPE_URLS];
+		if (this.settings.includeChessPuzzles) {
+			urls.push(HanayamaHuzzlesRecipe.CHESS_PUZZLES_WEBPAGE);
+		}
+		const scraper = new WebsiteScraper(urls);
 
 		return await scraper.scrape(
 			content => {

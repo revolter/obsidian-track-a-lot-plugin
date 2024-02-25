@@ -1,9 +1,10 @@
 import { App, Plugin, PluginSettingTab } from 'obsidian';
 import 'src/html/HTMLElementExtensions';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
-import { HanayamaHuzzlesRecipeSettings } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipeSettings';
+import { HanayamaHuzzlesRecipeExtraSettingsAdder } from 'src/recipes/hanayama_huzzles/settings/HanayamaHuzzlesRecipeExtraSettingsAdder';
+import { HanayamaHuzzlesRecipeSettings } from 'src/recipes/hanayama_huzzles/settings/HanayamaHuzzlesRecipeSettings';
 import { IQPuzzlesRecipe } from 'src/recipes/iq_puzzles/IQPuzzlesRecipe';
-import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/IQPuzzlesRecipeSettings';
+import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/settings/IQPuzzlesRecipeSettings';
 import { RecipeSettingsAdder } from './RecipeSettingsAdder';
 import { SettingsAdder } from './SettingsAdder';
 import { SettingsManager } from './SettingsManager';
@@ -40,13 +41,24 @@ export class RecipesSettingsTab extends PluginSettingTab {
 	#addHanayamaHuzzlesSettings(settings: HanayamaHuzzlesRecipeSettings, settingsAdder: SettingsAdder) {
 		const hanayamaHuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
 		hanayamaHuzzlesRecipeSettingsAdder.add(HanayamaHuzzlesRecipe.NAME, HanayamaHuzzlesRecipe.WEBPAGE);
+
+		const extraSettingsAdder = new HanayamaHuzzlesRecipeExtraSettingsAdder(this.containerEl, settingsAdder, settings);
+		const extraSettings = extraSettingsAdder.add();
+
 		hanayamaHuzzlesRecipeSettingsAdder.activate(
 			() => { return settings.isActive; },
 			async value => {
 				settings.isActive = value;
+
+				extraSettings.forEach(setting => {
+					setting.setDisabled(!value);
+				});
+
 				await this.settingsManager.saveSettings();
 			}
 		);
+
+		extraSettingsAdder.activate(async () => { await this.settingsManager.saveSettings(); });
 	}
 
 	#addIQPuzzlesSettings(settings: IQPuzzlesRecipeSettings, settingsAdder: SettingsAdder) {

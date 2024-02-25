@@ -6,3 +6,8 @@
 	display: inline-block;
 	margin-block-end: var(--p-spacing);
 }
+
+.is-disabled {
+	pointer-events: none;
+	opacity: 0.2;
+}
