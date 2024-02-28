@@ -1,4 +1,4 @@
-import { App, Plugin, PluginSettingTab } from 'obsidian';
+import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import 'src/html/HTMLElementExtensions';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { HanayamaHuzzlesRecipeExtraSettingsAdder } from 'src/recipes/hanayama_huzzles/settings/HanayamaHuzzlesRecipeExtraSettingsAdder';
@@ -50,9 +50,7 @@ export class RecipesSettingsTab extends PluginSettingTab {
 			async value => {
 				settings.isActive = value;
 
-				extraSettings.forEach(setting => {
-					setting.setDisabled(!value);
-				});
+				this.#setSettingsEnabled(extraSettings, value);
 
 				await this.settingsManager.saveSettings();
 			}
@@ -71,5 +69,11 @@ export class RecipesSettingsTab extends PluginSettingTab {
 				await this.settingsManager.saveSettings();
 			}
 		);
+	}
+
+	#setSettingsEnabled(settings: Setting[], enabled: boolean) {
+		settings.forEach(setting => {
+			setting.setDisabled(!enabled);
+		});
 	}
 }
