@@ -57,6 +57,8 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		);
 
 		extraSettingsAdder.activate(async () => { await this.settingsManager.saveSettings(); });
+
+		this.#setSettingsEnabled(extraSettings, settings.isActive);
 	}
 
 	#addIQPuzzlesSettings(settings: IQPuzzlesRecipeSettings, settingsAdder: SettingsAdder) {
