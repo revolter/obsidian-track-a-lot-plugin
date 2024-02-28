@@ -42,7 +42,7 @@ export class IQPuzzlesRecipe implements Recipe {
 	}
 
 	async #scrapePuzzles(): Promise<IQPuzzle[]> {
-		const nameRegex = new RegExp(/(?<name>\w+)$/); // https://regex101.com/r/AuK9pb/1
+		const nameRegex = new RegExp(/\s*(?<name>[\w\s]+)$/); // https://regex101.com/r/AuK9pb/2
 		const cleanedLinkRegex = new RegExp(/^(?<cleanedLink>.+?\.jpg)/); // https://regex101.com/r/fd3A6U/1
 		const scraper = new WebsiteScraper([IQPuzzlesRecipe.#SCRAPE_URL]);
 
