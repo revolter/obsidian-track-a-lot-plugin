@@ -1,5 +1,5 @@
 export class RegexFactory {
 	imageMarkdownLinkRegex(): RegExp {
-		return new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/g); // https://regex101.com/r/YlCOgc/2
+		return new RegExp(/!\[[^\]]+\]\((?<link>[^)]+)(?=\))/); // https://regex101.com/r/YlCOgc/3
 	}
 }
