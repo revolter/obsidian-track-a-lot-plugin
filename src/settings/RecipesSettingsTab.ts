@@ -23,15 +23,6 @@ export class RecipesSettingsTab extends PluginSettingTab {
 			.add('Recipes')
 			.setHeading();
 
-		settingsAdder.add(
-			'',
-			this.containerEl.createFragment(
-				this.containerEl.createText('span', '⚠️ Due to Obsidian Plugin limitations, you have to disable and re-enable the plugin from '),
-				this.containerEl.createText('code', 'Settings > Community plugins > Installed plugins'),
-				this.containerEl.createText('span', ' after toggling any recipe!')
-			)
-		);
-
 		const settings = this.settingsManager.settings;
 
 		this.#addHanayamaHuzzlesSettings(settings.hanayamaHuzzles, settingsAdder);

@@ -22,22 +22,30 @@ export default class TrackALotPlugin extends Plugin {
 		const commandFactory = new PluginUpdateCommandFactory();
 
 		if (settingsManager.settings.hanayamaHuzzles.isActive) {
-			const command = commandFactory.command(HanayamaHuzzlesRecipe.NAME, new HanayamaHuzzlesRecipe(
-				markdownTableFactory,
-				markdownTableConverter,
-				trackablesUpdater,
+			const command = commandFactory.command(
+				HanayamaHuzzlesRecipe.NAME,
+				new HanayamaHuzzlesRecipe(
+					markdownTableFactory,
+					markdownTableConverter,
+					trackablesUpdater,
+					settingsManager.settings.hanayamaHuzzles
+				),
 				settingsManager.settings.hanayamaHuzzles
-			));
+			);
 
 			this.addCommand(command);
 		}
 
 		if (settingsManager.settings.iqPuzzles.isActive) {
-			const command = commandFactory.command(IQPuzzlesRecipe.NAME, new IQPuzzlesRecipe(
-				markdownTableFactory,
-				markdownTableConverter,
-				trackablesUpdater
-			));
+			const command = commandFactory.command(
+				IQPuzzlesRecipe.NAME,
+				new IQPuzzlesRecipe(
+					markdownTableFactory,
+					markdownTableConverter,
+					trackablesUpdater
+				),
+				settingsManager.settings.iqPuzzles
+			);
 
 			this.addCommand(command);
 		}

@@ -14,7 +14,6 @@ column, and it will be preserved when you update the list.
 
 - Open `Settings` > `Track-a-Lot`
 - Enable the required tracking recipe
-- Disable and re-enable the plugin using instructions above the recipes
 
 ## Usage
 
