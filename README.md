@@ -1,5 +1,7 @@
 # Track-a-Lot Plugin
 
+![Obsidian plugin downloads badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fscambier.xyz%2Fobsidian-endpoints%2Ftrack-a-lot.json)
+
 This is a tracker plugin for Obsidian (https://obsidian.md).
 
 It scrapes different webpages, builds lists with the items, and allows you to
