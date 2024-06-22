@@ -72,7 +72,7 @@ export class IQPuzzlesRecipe implements Recipe {
 					? cleanedImageLinkMatch.groups.cleanedLink
 					: '';
 
-				return new IQPuzzle(name, cleanedImageLink);
+				return new IQPuzzle(name.trim(), cleanedImageLink);
 			}
 		);
 	}
