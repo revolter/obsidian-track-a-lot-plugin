@@ -26,3 +26,25 @@ column, and it will be preserved when you update the list.
 - Search for the `Track-a-Lot` command for the respective list (e.g.
   `Track-a-Lot: Update Hanayama Huzzles list`)
 - Press <kbd>Enter</kbd>
+
+## Contributing
+
+### Installation
+
+1. Install `Node.js` by following the instructions from
+   https://docs.npmjs.com/downloading-and-installing-node-js-and-npm.
+2. Install the `Node.js` dependencies by running
+   ```sh
+   npm install
+   ```
+
+### Usage
+
+```sh
+npm run dev
+```
+
+### Releasing
+
+1. Run `npm version <major/minor/patch>`.
+2. Manually create a release on GitHub.
