@@ -48,3 +48,7 @@ npm run dev
 
 1. Run `npm version <major/minor/patch>`.
 2. Manually create a release on GitHub.
+
+## License
+
+[MIT](LICENSE)
