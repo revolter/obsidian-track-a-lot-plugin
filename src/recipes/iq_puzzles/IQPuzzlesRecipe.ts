@@ -105,8 +105,9 @@ export class IQPuzzlesRecipe implements Recipe {
 			const name = array[0];
 
 			const image = array[1];
-			const imageLinkMatch = image.match(imageLinkRegex);
-			if (imageLinkMatch == null || imageLinkMatch.groups == null) {
+			const imageLinkMatches = Array.from(image.matchAll(imageLinkRegex));
+			const imageLinkMatch = imageLinkMatches[0];
+			if (imageLinkMatch == undefined || imageLinkMatch == null || imageLinkMatch.groups == null) {
 				return [];
 			}
 			const imageLink = imageLinkMatch.groups.link;
