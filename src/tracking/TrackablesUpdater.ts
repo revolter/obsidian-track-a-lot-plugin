@@ -2,7 +2,7 @@ import { Trackable } from './Trackable';
 
 export class TrackablesUpdater {
 	updatedTrackables<T extends Trackable>(currentTrackables: T[], newTrackables: T[]): T[] {
-		const indexedCurrentTrackables = currentTrackables.slice(1).reduce((map, trackable) => {
+		const indexedCurrentTrackables = currentTrackables.reduce((map, trackable) => {
 			map[trackable.identifier] = trackable;
 
 			return map;

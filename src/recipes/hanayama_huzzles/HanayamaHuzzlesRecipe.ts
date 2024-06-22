@@ -108,7 +108,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
 		const imageLinkRegex = new RegexFactory().imageMarkdownLinkRegex();
 
-		return arrayOfArrays.flatMap(array => {
+		return arrayOfArrays.slice(1).flatMap(array => {
 			if (array.length < HanayamaHuzzlesRecipe.#HEADERS.length) {
 				return [];
 			}

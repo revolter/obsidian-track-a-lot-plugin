@@ -97,7 +97,7 @@ export class IQPuzzlesRecipe implements Recipe {
 		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
 		const imageLinkRegex = new RegexFactory().imageMarkdownLinkRegex();
 
-		return arrayOfArrays.flatMap(array => {
+		return arrayOfArrays.slice(1).flatMap(array => {
 			if (array.length < IQPuzzlesRecipe.#HEADERS.length) {
 				return [];
 			}
