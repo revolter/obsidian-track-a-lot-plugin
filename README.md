@@ -47,7 +47,8 @@ npm run dev
 ### Releasing
 
 1. Run `npm version <major/minor/patch>`.
-2. Manually create a release on GitHub.
+2. Optionally add release notes to the created GitHub draft release.
+3. Publish the GitHub draft release.
 
 ## License
 
