@@ -109,7 +109,7 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		const imageLinkRegex = new RegexFactory().imageMarkdownLinkRegex();
 
 		return arrayOfArrays.flatMap(array => {
-			if (array.length < 5) {
+			if (array.length < HanayamaHuzzlesRecipe.#HEADERS.length) {
 				return [];
 			}
 
