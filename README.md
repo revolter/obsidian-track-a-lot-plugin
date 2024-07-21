@@ -1,4 +1,4 @@
-# Track-a-Lot Plugin
+# Obsidian Track-a-Lot Plugin
 
 ![Obsidian plugin downloads badge](https://img.shields.io/endpoint?url=https%3A%2F%2Fscambier.xyz%2Fobsidian-endpoints%2Ftrack-a-lot.json)
 
