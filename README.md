@@ -53,8 +53,9 @@ npm run dev
 ### Releasing
 
 1. Run `npm version <major/minor/patch>`.
-2. Optionally add release notes to the created GitHub draft release.
-3. Publish the GitHub draft release.
+2. Push the created tag by running `git push origin tag <tag name>`.
+3. Optionally add release notes to the created GitHub draft release.
+4. Publish the GitHub draft release.
 
 ## License
 
