@@ -14,18 +14,18 @@ column, and it will be preserved when you update the list.
 
 ## Settings
 
-- Open `Settings` > `Track-a-Lot`
-- Enable the required tracking recipe
+1. Open `Settings` > `Track-a-Lot`.
+2. Enable the required tracking recipe.
 
 ## Usage
 
-- Create or select a note
-- Make sure the note is in editing mode
-  (https://help.obsidian.md/Editing+and+formatting/Edit+and+preview+Markdown)
-- Open the `Command palette` (https://help.obsidian.md/Plugins/Command+palette)
-- Search for the `Track-a-Lot` command for the respective list (e.g.
-  `Track-a-Lot: Update Hanayama Huzzles list`)
-- Press <kbd>Enter</kbd>
+1. Create or select a note.
+2. Make sure the note is in editing mode
+  (https://help.obsidian.md/Editing+and+formatting/Edit+and+preview+Markdown).
+3. Open the `Command palette` (https://help.obsidian.md/Plugins/Command+palette).
+4. Search for the `Track-a-Lot` command for the respective list (e.g.
+  `Track-a-Lot: Update Hanayama Huzzles list`).
+5. Press <kbd>Enter</kbd>.
 
 ## Contributing
 
