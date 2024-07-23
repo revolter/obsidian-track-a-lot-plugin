@@ -57,6 +57,10 @@ npm run dev
 3. Optionally add release notes to the created GitHub draft release.
 4. Publish the GitHub draft release.
 
+### Submitting
+
+1. Follow the [official instructions](https://docs.obsidian.md/Plugins/Releasing/Submit+your+plugin#Step+3+Submit+your+plugin+for+review).
+
 ## License
 
 [MIT](LICENSE)
