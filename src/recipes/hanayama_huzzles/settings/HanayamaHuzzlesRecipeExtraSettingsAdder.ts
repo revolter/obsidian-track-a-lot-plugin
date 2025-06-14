@@ -18,7 +18,7 @@ export class HanayamaHuzzlesRecipeExtraSettingsAdder implements RecipeExtraSetti
 			'Include chess puzzles',
 			this.root.createFragment(
 				this.root.createText('span', 'Whether to include the chess puzzles ('),
-				this.root.createLink(HanayamaHuzzlesRecipe.CHESS_PUZZLES_WEBPAGE),
+				this.root.createLink(HanayamaHuzzlesRecipe.CHESS_PUZZLES_DATA_SOURCE.url),
 				this.root.createText('span', ') or not.')
 			)
 		);

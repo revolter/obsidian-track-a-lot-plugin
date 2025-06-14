@@ -10,19 +10,44 @@ import { RecipeMarker } from '../helpers/RecipeMarker';
 import { HanayamaHuzzle } from './HanayamaHuzzle';
 import { HanayamaHuzzlesRecipeSettings } from './settings/HanayamaHuzzlesRecipeSettings';
 
+interface HanayamaHuzzlesScrapeDataSource {
+	url: string;
+	level?: string;
+}
+
 export class HanayamaHuzzlesRecipe implements Recipe {
 	static readonly NAME = 'Hanayama Huzzles';
 	static readonly WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle';
-	static readonly CHESS_PUZZLES_WEBPAGE = 'https://hanayama-toys.com/product-category/puzzles/huzzle/chess-puzzle';
+	static readonly CHESS_PUZZLES_DATA_SOURCE: HanayamaHuzzlesScrapeDataSource = {
+		url: 'https://hanayama-toys.com/product-category/puzzles/huzzle/chess-puzzle'
+	};
 
 	static readonly #HEADERS: readonly string[] = ['Level', 'Index', 'Name', 'Picture', 'Status'];
-	static readonly #SCRAPE_URLS: readonly string[] = [
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-1-fun',
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-2-easy',
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-3-normal',
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-4-hard',
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-5-expert',
-		'https://hanayama-toys.com/product-category/puzzles/huzzle/level-6-grand-master'
+	static readonly #SCRAPE_DATA_SOURCES: readonly HanayamaHuzzlesScrapeDataSource[] = [
+		{
+			url: 'https://hanayama-toys.com/product-category/puzzles/huzzle/level-1-fun',
+			level: '1',
+		},
+		{
+			url: 'https://hanayama-toys.com/product-category/puzzles/huzzle/level-2-easy',
+			level: '2',
+		},
+		{
+			url: 'https://hanayama-toys.com/product-category/puzzles/huzzle/level-3-normal',
+			level: '3',
+		},
+		{
+			url: 'https://hanayama-toys.com/product-category/puzzles/huzzle/level-4-hard',
+			level: '4',
+		},
+		{
+			url: 'https://hanayama-toys.com/product-category/puzzles/huzzle/level-5-expert',
+			level: '5',
+		},
+		{
+			url: 'https://hanayama-toys.com/product-category/puzzles/huzzle/level-6-grand-master',
+			level: '6',
+		}
 	];
 
 	#marker = new RecipeMarker(HanayamaHuzzlesRecipe.NAME);
@@ -52,24 +77,29 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 	}
 
 	async #scrapeHuzzles(): Promise<HanayamaHuzzle[]> {
-		const metadataRegex = new RegExp(/\w+[ ](?<level>\d+)-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/2
+		const metadataRegex = new RegExp(/\w+[ ]\d+-(?<index>\d+)[ ](?<name>.+)/); // https://regex101.com/r/1vGzHd/3
 
-		const urls = [...HanayamaHuzzlesRecipe.#SCRAPE_URLS];
+		const dataSources = [...HanayamaHuzzlesRecipe.#SCRAPE_DATA_SOURCES];
 		if (this.settings.includeChessPuzzles) {
-			urls.push(HanayamaHuzzlesRecipe.CHESS_PUZZLES_WEBPAGE);
+			dataSources.push(HanayamaHuzzlesRecipe.CHESS_PUZZLES_DATA_SOURCE);
 		}
-		const scraper = new WebsiteScraper(urls);
+		const scraper = new WebsiteScraper(
+			dataSources.map(dataSource => ({
+				url: dataSource.url,
+				context: dataSource.level
+			}))
+		);
 
 		return await scraper.scrape(
 			content => {
 				return Array.from(content.querySelectorAll('#main > .products > .product'));
 			},
-			product => {
+			(product, sourceLevel) => {
 				const title = product.querySelector('.product-info > .product-title > a')?.textContent || '';
 				const titleMatch = title.match(metadataRegex);
 				const titleGroups = titleMatch?.groups;
 
-				const level = titleGroups != null ? titleGroups.level : 'N/A';
+				const level = sourceLevel ?? 'N/A';
 				const index = titleGroups != null ? titleGroups.index : 'N/A';
 				const name = titleGroups != null ? titleGroups.name : title;
 

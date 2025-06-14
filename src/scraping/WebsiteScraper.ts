@@ -1,21 +1,26 @@
 import { WebpageDownloader } from './WebpageDownloader';
 
-export class WebsiteScraper {
-	constructor(private urls: string[]) {}
+interface WebsiteScraperSource<Context> {
+	url: string;
+	context?: Context;
+}
+
+export class WebsiteScraper<Context> {
+	constructor(private sources: WebsiteScraperSource<Context>[]) {}
 
 	async scrape<T>(
 		parseWebpage: (webpage: Document) => Element[],
-		parseElement: (elements: Element) => T
+		parseElement: (elements: Element, context?: Context) => T
 	): Promise<T[]> {
 		const elements = await Promise.all(
-			this.urls
-			.map(async url => {
-				const downloader = new WebpageDownloader(url);
+			this.sources
+			.map(async source => {
+				const downloader = new WebpageDownloader(source.url);
 				const webpage = await downloader.download();
 				const elements = parseWebpage(webpage);
 
 				return elements.map(element => {
-					return parseElement(element);
+					return parseElement(element, source.context);
 				});
 			})
 		);
