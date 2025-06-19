@@ -8,10 +8,10 @@ interface WebsiteScraperSource<Context> {
 export class WebsiteScraper<Context> {
 	constructor(private sources: WebsiteScraperSource<Context>[]) {}
 
-	async scrape<T>(
+	async scrape<ParsedElement>(
 		parseWebpage: (webpage: Document) => Element[],
-		parseElement: (element: Element, context?: Context) => T | null
-	): Promise<T[]> {
+		parseElement: (element: Element, context?: Context) => ParsedElement | null
+	): Promise<ParsedElement[]> {
 		const elements = await Promise.all(
 			this.sources
 			.map(async source => {
@@ -23,7 +23,7 @@ export class WebsiteScraper<Context> {
 					.map(element => {
 						return parseElement(element, source.context);
 					})
-					.filter((element): element is T => element !== null);
+					.filter((element): element is ParsedElement => element !== null);
 			})
 		);
 
