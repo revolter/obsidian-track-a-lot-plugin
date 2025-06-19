@@ -95,7 +95,12 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 				return Array.from(content.querySelectorAll('#main > .products > .product'));
 			},
 			(product, sourceLevel) => {
-				const title = product.querySelector('.product-info > .product-title > a')?.textContent || '';
+				const title = product.querySelector('.product-info > .product-title > a')?.textContent;
+
+				if (title == null) {
+					return null;
+				}
+
 				const titleMatch = title.match(metadataRegex);
 				const titleGroups = titleMatch?.groups;
 

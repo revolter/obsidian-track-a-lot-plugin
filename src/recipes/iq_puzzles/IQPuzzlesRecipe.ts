@@ -61,7 +61,12 @@ export class IQPuzzlesRecipe implements Recipe {
 				return Array.from(list.querySelectorAll('li'));
 			},
 			product => {
-				const title = product.querySelector('div[data-hook="not-image-container"] a h3')?.textContent || '';
+				const title = product.querySelector('div[data-hook="not-image-container"] a h3')?.textContent;
+
+				if (title == null) {
+					return null;
+				}
+
 				const titleMatch = title.match(nameRegex);
 				const titleGroups = titleMatch?.groups;
 

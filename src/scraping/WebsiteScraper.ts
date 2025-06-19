@@ -10,7 +10,7 @@ export class WebsiteScraper<Context> {
 
 	async scrape<T>(
 		parseWebpage: (webpage: Document) => Element[],
-		parseElement: (elements: Element, context?: Context) => T
+		parseElement: (elements: Element, context?: Context) => T | null
 	): Promise<T[]> {
 		const elements = await Promise.all(
 			this.sources
@@ -19,9 +19,11 @@ export class WebsiteScraper<Context> {
 				const webpage = await downloader.download();
 				const elements = parseWebpage(webpage);
 
-				return elements.map(element => {
-					return parseElement(element, source.context);
-				});
+				return elements
+					.map(element => {
+						return parseElement(element, source.context);
+					})
+					.filter((element): element is T => element !== null);
 			})
 		);
 
