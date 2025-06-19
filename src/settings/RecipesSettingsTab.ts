@@ -53,9 +53,9 @@ export class RecipesSettingsTab extends PluginSettingTab {
 	}
 
 	#addIQPuzzlesSettings(settings: IQPuzzlesRecipeSettings, settingsAdder: SettingsAdder) {
-		const iqPuzzlesRecipeSettingsAdder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
-		iqPuzzlesRecipeSettingsAdder.add(IQPuzzlesRecipe.NAME, IQPuzzlesRecipe.WEBPAGE);
-		iqPuzzlesRecipeSettingsAdder.activate(
+		const adder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
+		adder.add(IQPuzzlesRecipe.NAME, IQPuzzlesRecipe.WEBPAGE);
+		adder.activate(
 			() => { return settings.isActive; },
 			async value => {
 				settings.isActive = value;
