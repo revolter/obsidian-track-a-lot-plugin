@@ -1,6 +1,7 @@
 import { Trackable } from 'src/tracking/Trackable';
+import { NameAndImage } from '../name_and_image/NameAndImage';
 
-export class IQPuzzle implements Trackable {
+export class IQPuzzle implements NameAndImage {
 	readonly identifier: string;
 
 	constructor(
