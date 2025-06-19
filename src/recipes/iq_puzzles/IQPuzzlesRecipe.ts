@@ -45,13 +45,22 @@ export class IQPuzzlesRecipe implements Recipe {
 					return null;
 				}
 
-				const titleMatch = title.match(nameRegex);
-				const titleGroups = titleMatch?.groups;
+				let name: string;
 
-				const name = titleGroups?.name;
+				const exceptionTitle = 'Elephant';
+				if (title === exceptionTitle) {
+					name = exceptionTitle;
+				} else {
+					const titleMatch = title.match(nameRegex);
+					const titleGroups = titleMatch?.groups;
 
-				if (name == null) {
-					return null;
+					const tempName = titleGroups?.name;
+
+					if (tempName == null) {
+						return null;
+					}
+
+					name = tempName;
 				}
 
 				const image = product.querySelector('a wow-image img');
