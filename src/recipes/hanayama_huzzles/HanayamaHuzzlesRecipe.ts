@@ -106,7 +106,11 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 
 				const level = sourceLevel ?? 'N/A';
 				const index = titleGroups != null ? titleGroups.index : 'N/A';
-				const name = titleGroups != null ? titleGroups.name : title;
+				const name = titleGroups?.name;
+
+				if (name == null) {
+					return null;
+				}
 
 				const images = product.querySelectorAll('.product-thumb > a > img');
 				const imageLinks = Array.from(images, image => (image as HTMLImageElement).src);

@@ -70,7 +70,11 @@ export class IQPuzzlesRecipe implements Recipe {
 				const titleMatch = title.match(nameRegex);
 				const titleGroups = titleMatch?.groups;
 
-				const name = titleGroups != null ? titleGroups.name : title;
+				const name = titleGroups?.name;
+
+				if (name == null) {
+					return null;
+				}
 
 				const image = product.querySelector('a wow-image img');
 				const imageLink = image != null ? (image as HTMLImageElement).src : '';
