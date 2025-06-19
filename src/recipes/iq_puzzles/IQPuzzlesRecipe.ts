@@ -61,7 +61,7 @@ export class IQPuzzlesRecipe implements Recipe {
 				return Array.from(list.querySelectorAll('li'));
 			},
 			product => {
-				const title = product.querySelector('div[data-hook="not-image-container"] a h3')?.textContent;
+				const title = product.querySelector('p[data-hook="product-item-name"]')?.textContent;
 
 				if (title == null) {
 					return null;
