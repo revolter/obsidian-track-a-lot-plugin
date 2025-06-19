@@ -23,7 +23,7 @@ export class IQPuzzlesRecipe implements Recipe {
 
 		this.recipe = new NameAndImageRecipe<IQPuzzle>(
 			IQPuzzlesRecipe.NAME,
-			IQPuzzlesRecipe.#SCRAPE_URL,
+			[IQPuzzlesRecipe.#SCRAPE_URL],
 			markdownTableFactory,
 			markdownTableConverter,
 			trackablesUpdater,

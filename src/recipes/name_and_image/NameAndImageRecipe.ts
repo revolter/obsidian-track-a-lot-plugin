@@ -16,7 +16,7 @@ export class NameAndImageRecipe<ParsedElement extends NameAndImage> implements R
 
 	constructor(
 		private name: string,
-		private scrapeURL: string,
+		private scrapeURLs: string[],
 		private markdownTableFactory: MarkdownTableFactory,
 		private markdownTableConverter: MarkdownTableConverter,
 		private trackablesUpdater: TrackablesUpdater,
@@ -43,9 +43,9 @@ export class NameAndImageRecipe<ParsedElement extends NameAndImage> implements R
 	}
 
 	async #scrapePuzzles(): Promise<ParsedElement[]> {
-		const scraper = new WebsiteScraper([{
-			url: this.scrapeURL
-		}]);
+		const scraper = new WebsiteScraper(
+			this.scrapeURLs.map(url => ({ url }))
+		);
 
 		return await scraper.scrape(
 			this.parseContent,
