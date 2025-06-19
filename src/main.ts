@@ -2,6 +2,7 @@ import { Plugin } from 'obsidian';
 import { MarkdownTableConverter } from './markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from './markdown/MarkdownTableFactory';
 import { PluginUpdateCommandFactory } from './plugin/PluginUpdateCommandFactory';
+import { GelateriaLaRomanaDel1947GelatiRecipe } from './recipes/gelateria_la_romana_dal_1947_gelati/GelateriaLaRomanaDel1947GelatiRecipe';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { IQPuzzlesRecipe } from './recipes/iq_puzzles/IQPuzzlesRecipe';
 import { RecipesSettingsTab } from './settings/RecipesSettingsTab';
@@ -45,6 +46,20 @@ export default class TrackALotPlugin extends Plugin {
 					trackablesUpdater
 				),
 				settingsManager.settings.iqPuzzles
+			);
+
+			this.addCommand(command);
+		}
+
+		if (settingsManager.settings.gelateriaLaRomanaDel1947Gelati.isActive) {
+			const command = commandFactory.command(
+				GelateriaLaRomanaDel1947GelatiRecipe.NAME,
+				new GelateriaLaRomanaDel1947GelatiRecipe(
+					markdownTableFactory,
+					markdownTableConverter,
+					trackablesUpdater
+				),
+				settingsManager.settings.gelateriaLaRomanaDel1947Gelati
 			);
 
 			this.addCommand(command);
