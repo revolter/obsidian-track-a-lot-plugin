@@ -7,6 +7,7 @@ import { Recipe } from '../Recipe';
 import { RecipeListUpdater } from '../helpers/RecipeListUpdater';
 import { RecipeMarkdownListUpdater } from '../helpers/RecipeMarkdownListUpdater';
 import { RecipeMarker } from '../helpers/RecipeMarker';
+import { NameAndImage } from '../name_and_image/NameAndImage';
 import { IQPuzzle } from './IQPuzzle';
 
 export class IQPuzzlesRecipe implements Recipe {
@@ -26,7 +27,7 @@ export class IQPuzzlesRecipe implements Recipe {
 
 	async updatedListInContent(content: string): Promise<string> {
 		const markdownUpdater = new RecipeMarkdownListUpdater(this.#marker);
-		const updater = new RecipeListUpdater<IQPuzzle>(
+		const updater = new RecipeListUpdater<NameAndImage>(
 			IQPuzzlesRecipe.#HEADERS,
 			markdownUpdater,
 			this.trackablesUpdater
@@ -41,7 +42,7 @@ export class IQPuzzlesRecipe implements Recipe {
 		);
 	}
 
-	async #scrapePuzzles(): Promise<IQPuzzle[]> {
+	async #scrapePuzzles(): Promise<NameAndImage[]> {
 		const nameRegex = new RegExp(/• (?<name>[\w\s]+?)\s*$/); // https://regex101.com/r/AuK9pb/4
 		const cleanedLinkRegex = new RegExp(/^(?<cleanedLink>.+?\.jpg)/); // https://regex101.com/r/fd3A6U/1
 		const scraper = new WebsiteScraper([{
@@ -88,7 +89,7 @@ export class IQPuzzlesRecipe implements Recipe {
 		);
 	}
 
-	#puzzlesToMarkdownTableString(headers: string[], puzzles: IQPuzzle[]): string {
+	#puzzlesToMarkdownTableString(headers: string[], puzzles: NameAndImage[]): string {
 		const headerRow = this.markdownTableFactory.tableRowNode(
 			headers.map(header => this.markdownTableFactory.textTableCellNode(header))
 		);
@@ -104,7 +105,7 @@ export class IQPuzzlesRecipe implements Recipe {
 		return this.markdownTableConverter.tableToString(table);
 	}
 
-	#markdownTableStringToPuzzles(markdownTableString: string): IQPuzzle[] {
+	#markdownTableStringToPuzzles(markdownTableString: string): NameAndImage[] {
 		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
 		const imageLinkRegex = new RegexFactory().imageMarkdownLinkRegex();
 
