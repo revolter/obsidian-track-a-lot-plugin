@@ -1,7 +1,7 @@
 import { Trackable } from 'src/tracking/Trackable';
 
 export class IQPuzzle implements Trackable {
-	identifier: string;
+	readonly identifier: string;
 
 	constructor(
 		public readonly name: string,

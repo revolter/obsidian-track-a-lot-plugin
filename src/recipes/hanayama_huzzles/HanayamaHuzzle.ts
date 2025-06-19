@@ -1,7 +1,7 @@
 import { Trackable } from 'src/tracking/Trackable';
 
 export class HanayamaHuzzle implements Trackable {
-	identifier: string;
+	readonly identifier: string;
 
 	constructor(
 		public readonly level: string,
