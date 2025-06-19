@@ -10,7 +10,7 @@ export class WebsiteScraper<Context> {
 
 	async scrape<T>(
 		parseWebpage: (webpage: Document) => Element[],
-		parseElement: (elements: Element, context?: Context) => T | null
+		parseElement: (element: Element, context?: Context) => T | null
 	): Promise<T[]> {
 		const elements = await Promise.all(
 			this.sources
