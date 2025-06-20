@@ -36,13 +36,13 @@ export class NameAndImageRecipe<ParsedElement extends NameAndImage> implements R
 		return await updater.update(
 			content,
 
-			this.#markdownTableStringToPuzzles.bind(this),
-			this.#scrapePuzzles.bind(this),
-			this.#puzzlesToMarkdownTableString.bind(this)
+			this.#markdownTableStringToItems.bind(this),
+			this.#scrapeItems.bind(this),
+			this.#itemsToMarkdownTableString.bind(this)
 		);
 	}
 
-	async #scrapePuzzles(): Promise<ParsedElement[]> {
+	async #scrapeItems(): Promise<ParsedElement[]> {
 		const scraper = new WebsiteScraper(
 			this.scrapeURLs.map(url => ({ url }))
 		);
@@ -53,30 +53,30 @@ export class NameAndImageRecipe<ParsedElement extends NameAndImage> implements R
 		);
 	}
 
-	#puzzlesToMarkdownTableString(headers: string[], puzzles: ParsedElement[]): string {
+	#itemsToMarkdownTableString(headers: string[], items: ParsedElement[]): string {
 		const headerRow = this.markdownTableFactory.tableRowNode(
 			headers.map(header => this.markdownTableFactory.textTableCellNode(header))
 		);
-		const puzzleRows = puzzles
+		const itemRows = items
 			.sort((first, second) =>
 				first.name.localeCompare(second.name, undefined, {
 					numeric: true,
 					sensitivity: 'base'
 				})
 			)
-			.map(puzzle =>
+			.map(item =>
 				this.markdownTableFactory.tableRowNode([
-					this.markdownTableFactory.textTableCellNode(puzzle.name),
-					this.markdownTableFactory.imageTableCellNode(puzzle.imageLink, 100),
-					this.markdownTableFactory.textTableCellNode(puzzle.status)
+					this.markdownTableFactory.textTableCellNode(item.name),
+					this.markdownTableFactory.imageTableCellNode(item.imageLink, 100),
+					this.markdownTableFactory.textTableCellNode(item.status)
 				])
 			);
-		const table = this.markdownTableFactory.table(headerRow, puzzleRows);
+		const table = this.markdownTableFactory.table(headerRow, itemRows);
 
 		return this.markdownTableConverter.tableToString(table);
 	}
 
-	#markdownTableStringToPuzzles(markdownTableString: string): ParsedElement[] {
+	#markdownTableStringToItems(markdownTableString: string): ParsedElement[] {
 		const arrayOfArrays = this.markdownTableConverter.arrayOfArraysFromString(markdownTableString);
 		const imageLinkRegex = new RegexFactory().imageMarkdownLinkRegex();
 
