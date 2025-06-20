@@ -19,6 +19,10 @@ export class IQPuzzlesRecipe implements Recipe {
 		trackablesUpdater: TrackablesUpdater
 	) {
 		const nameRegex = new RegExp(/• (?<name>[\w\s]+?)\s*$/); // https://regex101.com/r/AuK9pb/4
+		const invalidPuzzleNames = [
+			'№1 Haosul Îndărătnic Set 7in1',
+			'№2 Haosul Îndărătnic Set 7in1'
+		];
 		const cleanedLinkRegex = new RegExp(/^(?<cleanedLink>.+?\.jpg)/); // https://regex101.com/r/fd3A6U/1
 
 		this.recipe = new NameAndImageRecipe<IQPuzzle>(
@@ -45,23 +49,14 @@ export class IQPuzzlesRecipe implements Recipe {
 					return null;
 				}
 
-				let name: string;
-
-				const exceptionTitle = 'Elephant';
-				if (title === exceptionTitle) {
-					name = exceptionTitle;
-				} else {
-					const titleMatch = title.match(nameRegex);
-					const titleGroups = titleMatch?.groups;
-
-					const tempName = titleGroups?.name;
-
-					if (tempName == null) {
-						return null;
-					}
-
-					name = tempName;
+				if (invalidPuzzleNames.includes(title)) {
+					return null;
 				}
+
+				const titleMatch = title.match(nameRegex);
+				const titleGroups = titleMatch?.groups;
+
+				const name = titleGroups?.name ?? title;
 
 				const image = product.querySelector('a wow-image img');
 				const imageLink = image != null ? (image as HTMLImageElement).src : '';
