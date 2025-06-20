@@ -20,9 +20,9 @@ export class WebsiteScraper<Context> {
 				const elements = parseWebpage(webpage);
 
 				return elements
-					.map(element => {
-						return parseElement(element, source.context);
-					})
+					.map(element =>
+						parseElement(element, source.context)
+					)
 					.filter((element): element is ParsedElement => element !== null);
 			})
 		);
