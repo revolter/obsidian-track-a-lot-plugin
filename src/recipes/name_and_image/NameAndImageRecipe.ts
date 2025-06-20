@@ -57,13 +57,20 @@ export class NameAndImageRecipe<ParsedElement extends NameAndImage> implements R
 		const headerRow = this.markdownTableFactory.tableRowNode(
 			headers.map(header => this.markdownTableFactory.textTableCellNode(header))
 		);
-		const puzzleRows = puzzles.map(puzzle =>
-			this.markdownTableFactory.tableRowNode([
-				this.markdownTableFactory.textTableCellNode(puzzle.name),
-				this.markdownTableFactory.imageTableCellNode(puzzle.imageLink, 100),
-				this.markdownTableFactory.textTableCellNode(puzzle.status)
-			])
-		);
+		const puzzleRows = puzzles
+			.sort((first, second) =>
+				first.name.localeCompare(second.name, undefined, {
+					numeric: true,
+					sensitivity: 'base'
+				})
+			)
+			.map(puzzle =>
+				this.markdownTableFactory.tableRowNode([
+					this.markdownTableFactory.textTableCellNode(puzzle.name),
+					this.markdownTableFactory.imageTableCellNode(puzzle.imageLink, 100),
+					this.markdownTableFactory.textTableCellNode(puzzle.status)
+				])
+			);
 		const table = this.markdownTableFactory.table(headerRow, puzzleRows);
 
 		return this.markdownTableConverter.tableToString(table);
