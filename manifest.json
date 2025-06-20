@@ -1,7 +1,7 @@
 {
 	"id": "track-a-lot",
 	"name": "Track-a-Lot",
-	"version": "1.3.1",
+	"version": "1.4.0",
 	"minAppVersion": "0.15.0",
 	"description": "Scrape different webpages, builds lists with the items as Markdown tables, and allows you to track their status.",
 	"author": "Iulian Onofrei",
