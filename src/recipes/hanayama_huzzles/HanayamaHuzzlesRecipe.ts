@@ -1,3 +1,5 @@
+import { TableCell } from 'mdast';
+import { naturalCompare } from 'src/helpers/NaturalSorter';
 import { MarkdownTableConverter } from 'src/markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { RegexFactory } from 'src/regex/RegexFactory';
@@ -116,24 +118,47 @@ export class HanayamaHuzzlesRecipe implements Recipe {
 		);
 	}
 
-	#huzzlesToMarkdownTableString(headers: string[], huzzles: HanayamaHuzzle[]): string {
+	#huzzlesToMarkdownTableString(headers: string[], syncedHuzzles: HanayamaHuzzle[], withdrawnModifiedHuzzles: HanayamaHuzzle[]): string {
 		const headerRow = this.markdownTableFactory.tableRowNode(
 			headers.map(header => this.markdownTableFactory.textTableCellNode(header))
 		);
-		const huzzleRows = huzzles.map(huzzle =>
-			this.markdownTableFactory.tableRowNode([
-				this.markdownTableFactory.textTableCellNode(huzzle.level),
-				this.markdownTableFactory.textTableCellNode(huzzle.index),
-				this.markdownTableFactory.textTableCellNode(huzzle.name),
-				this.markdownTableFactory.tableCellNode(
-					this.markdownTableFactory.interleave(
-						huzzle.imageLinks.map(imageLink => this.markdownTableFactory.imageNode(imageLink, 100)),
-						this.markdownTableFactory.textNode(' ')
-					)
-				),
-				this.markdownTableFactory.textTableCellNode(huzzle.status)
-			])
-		);
+		const huzzleRows = [
+			...syncedHuzzles,
+			...withdrawnModifiedHuzzles
+		]
+			.sort((first, second) => {
+				const stringToNumber = (string: string) =>
+					isNaN(Number(string)) ? Infinity : Number(string);
+				const compare = (first: number, second: number) =>
+					first < second ? -1 : first > second ? 1 : 0;
+
+				return (
+					compare(stringToNumber(first.level), stringToNumber(second.level))
+					|| compare(stringToNumber(first.index), stringToNumber(second.index))
+					|| naturalCompare(first.name, second.name)
+				);
+			})
+			.map(huzzle => {
+				let nameTableCell: TableCell;
+				if (withdrawnModifiedHuzzles.includes(huzzle)) {
+					nameTableCell = this.markdownTableFactory.deletedTextTableCellNode(huzzle.name);
+				} else {
+					nameTableCell = this.markdownTableFactory.textTableCellNode(huzzle.name);
+				}
+
+				return this.markdownTableFactory.tableRowNode([
+					this.markdownTableFactory.textTableCellNode(huzzle.level),
+					this.markdownTableFactory.textTableCellNode(huzzle.index),
+					nameTableCell,
+					this.markdownTableFactory.tableCellNode(
+						this.markdownTableFactory.interleave(
+							huzzle.imageLinks.map(imageLink => this.markdownTableFactory.imageNode(imageLink, 100)),
+							this.markdownTableFactory.textNode(' ')
+						)
+					),
+					this.markdownTableFactory.textTableCellNode(huzzle.status)
+				]);
+			});
 		const table = this.markdownTableFactory.table(headerRow, huzzleRows);
 
 		return this.markdownTableConverter.tableToString(table);

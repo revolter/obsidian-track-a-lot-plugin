@@ -1,3 +1,5 @@
+import { TableCell } from 'mdast';
+import { naturalCompare } from 'src/helpers/NaturalSorter';
 import { MarkdownTableConverter } from 'src/markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from 'src/markdown/MarkdownTableFactory';
 import { RegexFactory } from 'src/regex/RegexFactory';
@@ -53,24 +55,31 @@ export class NameAndImageRecipe<ParsedElement extends NameAndImage> implements R
 		);
 	}
 
-	#itemsToMarkdownTableString(headers: string[], items: ParsedElement[]): string {
+	#itemsToMarkdownTableString(headers: string[], syncedItems: ParsedElement[], withdrawnModifiedItems: ParsedElement[]): string {
 		const headerRow = this.markdownTableFactory.tableRowNode(
 			headers.map(header => this.markdownTableFactory.textTableCellNode(header))
 		);
-		const itemRows = items
+		const itemRows = [
+			...syncedItems,
+			...withdrawnModifiedItems
+		]
 			.sort((first, second) =>
-				first.name.localeCompare(second.name, undefined, {
-					numeric: true,
-					sensitivity: 'base'
-				})
+				naturalCompare(first.name, second.name)
 			)
-			.map(item =>
-				this.markdownTableFactory.tableRowNode([
-					this.markdownTableFactory.textTableCellNode(item.name),
+			.map(item => {
+				let nameTableCell: TableCell;
+				if (withdrawnModifiedItems.includes(item)) {
+					nameTableCell = this.markdownTableFactory.deletedTextTableCellNode(item.name);
+				} else {
+					nameTableCell = this.markdownTableFactory.textTableCellNode(item.name);
+				}
+
+				return this.markdownTableFactory.tableRowNode([
+					nameTableCell,
 					this.markdownTableFactory.imageTableCellNode(item.imageLink, 100),
 					this.markdownTableFactory.textTableCellNode(item.status)
-				])
-			);
+				]);
+			});
 		const table = this.markdownTableFactory.table(headerRow, itemRows);
 
 		return this.markdownTableConverter.tableToString(table);

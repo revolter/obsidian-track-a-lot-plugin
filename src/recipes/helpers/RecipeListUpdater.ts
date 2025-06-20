@@ -13,14 +13,14 @@ export class RecipeListUpdater<RecipeItem extends Trackable> {
 		content: string,
 		markdownTableStringToTrackables: (markdownTableString: string) => RecipeItem[],
 		scrapeTrackables: () => Promise<RecipeItem[]>,
-		trackablesToMarkdownTableString: (headers: readonly string[], trackables: RecipeItem[]) => string
+		trackablesToMarkdownTableString: (headers: readonly string[], syncedTrackables: RecipeItem[], withdrawnModifiedTrackables: RecipeItem[]) => string
 	): Promise<string> {
 		return this.recipeMarkdownListUpdater.update(content, async markdownList => {
 			const currentTrackables = markdownList != null ? markdownTableStringToTrackables(markdownList) : [];
 			const newTrackables = await scrapeTrackables();
-			const updatedTrackables = this.trackablesUpdater.updatedTrackables(currentTrackables, newTrackables);
+			const [updatedSyncedTrackables, updatedwithdrawnModifiedTrackables] = this.trackablesUpdater.updatedTrackables(currentTrackables, newTrackables);
 
-			return trackablesToMarkdownTableString(this.headers, updatedTrackables);
+			return trackablesToMarkdownTableString(this.headers, updatedSyncedTrackables, updatedwithdrawnModifiedTrackables);
 		});
 	}
 }

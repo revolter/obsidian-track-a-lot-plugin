@@ -1,4 +1,4 @@
-import { Image, PhrasingContent, Table, TableCell, TableRow, Text } from 'mdast';
+import { Delete, Image, PhrasingContent, Table, TableCell, TableRow, Text } from 'mdast';
 
 export class MarkdownTableFactory {
 	table(header: TableRow, rows: TableRow[]): Table {
@@ -24,6 +24,10 @@ export class MarkdownTableFactory {
 		return this.tableCellNode([this.textNode(text)]);
 	}
 
+	deletedTextTableCellNode(text: string): TableCell {
+		return this.tableCellNode([this.deletedTextNode(text)]);
+	}
+
 	imageTableCellNode(url: string, size: number): TableCell {
 		return this.tableCellNode([this.imageNode(url, size)]);
 	}
@@ -39,6 +43,13 @@ export class MarkdownTableFactory {
 		return {
 			type: 'text',
 			value: text
+		};
+	}
+
+	deletedTextNode(text: string): Delete {
+		return {
+			type: 'delete',
+			children: [this.textNode(text)]
 		};
 	}
 
