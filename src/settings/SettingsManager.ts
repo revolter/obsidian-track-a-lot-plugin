@@ -1,4 +1,5 @@
 import { Plugin } from 'obsidian';
+import { EisKaltIceCreamsRecipeSettings } from 'src/recipes/eis_kalt_ice_creams/EisKaltIceCreamsRecipeSettings';
 import { GelateriaLaRomanaDel1947GelatiRecipeSettings } from 'src/recipes/gelateria_la_romana_dal_1947_gelati/GelateriaLaRomanaDel1947GelatiRecipeSettings';
 import { HanayamaHuzzlesRecipeSettings } from 'src/recipes/hanayama_huzzles/settings/HanayamaHuzzlesRecipeSettings';
 import { IQPuzzlesRecipeSettings } from 'src/recipes/iq_puzzles/IQPuzzlesRecipeSettings';
@@ -8,7 +9,8 @@ export class SettingsManager {
 	static readonly #DEFAULT_SETTINGS: Partial<RecipesSettings> = {
 		hanayamaHuzzles: new HanayamaHuzzlesRecipeSettings(),
 		iqPuzzles: new IQPuzzlesRecipeSettings(),
-		gelateriaLaRomanaDel1947Gelati: new GelateriaLaRomanaDel1947GelatiRecipeSettings()
+		gelateriaLaRomanaDel1947Gelati: new GelateriaLaRomanaDel1947GelatiRecipeSettings(),
+		eisKaltIceCreams: new EisKaltIceCreamsRecipeSettings()
 	};
 
 	settings: RecipesSettings;

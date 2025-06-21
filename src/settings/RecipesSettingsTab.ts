@@ -1,5 +1,7 @@
 import { App, Plugin, PluginSettingTab, Setting } from 'obsidian';
 import 'src/html/HTMLElementExtensions';
+import { EisKaltIceCreamsRecipe } from 'src/recipes/eis_kalt_ice_creams/EisKaltIceCreamsRecipe';
+import { EisKaltIceCreamsRecipeSettings } from 'src/recipes/eis_kalt_ice_creams/EisKaltIceCreamsRecipeSettings';
 import { GelateriaLaRomanaDel1947GelatiRecipe } from 'src/recipes/gelateria_la_romana_dal_1947_gelati/GelateriaLaRomanaDel1947GelatiRecipe';
 import { GelateriaLaRomanaDel1947GelatiRecipeSettings } from 'src/recipes/gelateria_la_romana_dal_1947_gelati/GelateriaLaRomanaDel1947GelatiRecipeSettings';
 import { HanayamaHuzzlesRecipe } from 'src/recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
@@ -30,6 +32,7 @@ export class RecipesSettingsTab extends PluginSettingTab {
 		this.#addHanayamaHuzzlesSettings(settings.hanayamaHuzzles, settingsAdder);
 		this.#addIQPuzzlesSettings(settings.iqPuzzles, settingsAdder);
 		this.#addGelateriaLaRomanaDel1947GelatiSettings(settings.gelateriaLaRomanaDel1947Gelati, settingsAdder);
+		this.#addEisKaltIceCreamsSettings(settings.eisKaltIceCreams, settingsAdder);
 	}
 
 	#addHanayamaHuzzlesSettings(settings: HanayamaHuzzlesRecipeSettings, settingsAdder: SettingsAdder) {
@@ -70,6 +73,18 @@ export class RecipesSettingsTab extends PluginSettingTab {
 	#addGelateriaLaRomanaDel1947GelatiSettings(settings: GelateriaLaRomanaDel1947GelatiRecipeSettings, settingsAdder: SettingsAdder) {
 		const adder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
 		adder.add(GelateriaLaRomanaDel1947GelatiRecipe.NAME, GelateriaLaRomanaDel1947GelatiRecipe.WEBPAGE);
+		adder.activate(
+			() => { return settings.isActive; },
+			async value => {
+				settings.isActive = value;
+				await this.settingsManager.saveSettings();
+			}
+		);
+	}
+
+	#addEisKaltIceCreamsSettings(settings: EisKaltIceCreamsRecipeSettings, settingsAdder: SettingsAdder) {
+		const adder = new RecipeSettingsAdder(this.containerEl, settingsAdder);
+		adder.add(EisKaltIceCreamsRecipe.NAME, EisKaltIceCreamsRecipe.WEBPAGE);
 		adder.activate(
 			() => { return settings.isActive; },
 			async value => {

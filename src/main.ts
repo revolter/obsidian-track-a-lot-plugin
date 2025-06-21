@@ -2,6 +2,7 @@ import { Plugin } from 'obsidian';
 import { MarkdownTableConverter } from './markdown/MarkdownTableConverter';
 import { MarkdownTableFactory } from './markdown/MarkdownTableFactory';
 import { PluginUpdateCommandFactory } from './plugin/PluginUpdateCommandFactory';
+import { EisKaltIceCreamsRecipe } from './recipes/eis_kalt_ice_creams/EisKaltIceCreamsRecipe';
 import { GelateriaLaRomanaDel1947GelatiRecipe } from './recipes/gelateria_la_romana_dal_1947_gelati/GelateriaLaRomanaDel1947GelatiRecipe';
 import { HanayamaHuzzlesRecipe } from './recipes/hanayama_huzzles/HanayamaHuzzlesRecipe';
 import { IQPuzzlesRecipe } from './recipes/iq_puzzles/IQPuzzlesRecipe';
@@ -60,6 +61,20 @@ export default class TrackALotPlugin extends Plugin {
 					trackablesUpdater
 				),
 				settingsManager.settings.gelateriaLaRomanaDel1947Gelati
+			);
+
+			this.addCommand(command);
+		}
+
+		if (settingsManager.settings.eisKaltIceCreams.isActive) {
+			const command = commandFactory.command(
+				EisKaltIceCreamsRecipe.NAME,
+				new EisKaltIceCreamsRecipe(
+					markdownTableFactory,
+					markdownTableConverter,
+					trackablesUpdater
+				),
+				settingsManager.settings.eisKaltIceCreams
 			);
 
 			this.addCommand(command);
