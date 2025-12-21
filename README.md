@@ -21,7 +21,7 @@ column, and it will be preserved when you update the list.
 
 1. Create or select a note.
 2. Make sure the note is in editing mode
-  (https://help.obsidian.md/Editing+and+formatting/Edit+and+preview+Markdown).
+   (https://help.obsidian.md/edit-and-read#Editing+view).
 3. Open the `Command palette` (https://help.obsidian.md/Plugins/Command+palette).
 4. Search for the `Track-a-Lot` command for the respective list (e.g.
   `Track-a-Lot: Update Hanayama Huzzles list`).
